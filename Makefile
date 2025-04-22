@@ -1,5 +1,5 @@
 TARGET ?= main
-OBJS = dangeon.o sup_func.o $(TARGET).o
+OBJS = dangeon.o sup_func.o fight.c $(TARGET).o
 CC = clang
 CFLAGS = -Wall -g -O2
 

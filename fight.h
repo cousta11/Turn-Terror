@@ -3,7 +3,6 @@
 
 #include "dangeon.h"
 
-int start_figth();
-int fight();
+int start_figth(gamer *player, mobs *enemies);
 
 #endif

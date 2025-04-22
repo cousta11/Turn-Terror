@@ -9,10 +9,8 @@ void mvplayer(const int mod_y, const int mod_x,
 		return;
 	if(x + mod_x > max_x || x + mod_x < 0)
 		return;
-	clear();
 	player->y += mod_y;
 	player->x += mod_x;
-	mvaddch(player->y, player->x, CHAR);
 	return;
 }
 
@@ -41,6 +39,11 @@ int main(int argc, char *argv[])
 
 	player.y = max_y-- / 2;
 	player.x = max_x-- / 2;
+	/* tmporarily */
+	player.lvl = 1;
+	player.max_hp = player.lvl * 2;
+	player.max_mp = player.lvl * 4;
+	/* end tmporarily */
 	mvaddch(player.y, player.x, CHAR);
 
 	dangeon_genereted(max_y, max_x, &enemies, player);
@@ -64,6 +67,12 @@ int main(int argc, char *argv[])
 				mvplayer(0, 1, max_y, max_x, &player);
 				break;
 		}
+		if(start_figth(&player, enemies)) {
+			endwin();
+			return 0;
+		}
+		clear();
+		mvaddch(player.y, player.x, CHAR);
 		refresh();
 	}
 

@@ -7,6 +7,8 @@ static char definition_of_icon(enum enemy icon)
 		case skeleton: return 'S';
 		case troll: return 'T';
 		case end: return ' ';
+		case zero: return ' ';
+		case start: return ' ';
 	}
 	return ' ';
 }
@@ -26,7 +28,7 @@ static void enemy_genereted(mobs **enemies, gamer player, int min_y, int min_x,
 		}
 		tmp->y = y;
 		tmp->x = x;
-		icon = rand_to(0, end - 1);
+		icon = rand_to(start + 1, end - 1);
 		tmp->icon = definition_of_icon(icon);
 		tmp->next = *enemies;
 		*enemies = tmp;

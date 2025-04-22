@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../include/main.h"
 
 void mvplayer(const int mod_y, const int mod_x,
 		const int max_y, const int max_x, struct gamer *player)

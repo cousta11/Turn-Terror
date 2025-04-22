@@ -1,31 +1,19 @@
-TARGET ?= main
-OBJS = dangeon.o sup_func.o fight.c $(TARGET).o
+SRC = src/main.c src/dangeon.c src/fight.c src/sup_func.c
+OBJ = $(SRC:.c=.o)
 CC = clang
-CFLAGS = -Wall -g -O2
+CFLAGS = -Wall -Wextra -g -O2
+EXEC = game
 
-# Определяем ОС (Windows или Linux/MacOS)
-ifeq ($(OS),Windows_NT)
-	# Настройки для Windows (MinGW-w64)
-	CFLAGS += --target=x86_64-w64-pc-windows-gnu
-	LDFLAGS = -lpdcurses  # В MinGW-w64 используется pdcurses вместо ncurses
-	INC = -I/usr/x86_64-w64-mingw32/include
-	LIB = -L/usr/x86_64-w64-mingw32/lib
-	TARGET := $(TARGET).exe
-else
-    # Настройки для Linux/MacOS
-	LDFLAGS = -lncurses
-endif
 
 .PHONY: all clean
 
-all: $(TARGET)
+all: $(EXEC)
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(INC) $(LIB) -o $@ $^ $(LDFLAGS)
+$(EXEC): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ -lncurses
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET)
-
+	rm -f $(OBJ) $(EXEC)

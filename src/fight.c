@@ -1,4 +1,4 @@
-#include "fight.h"
+#include "../include/fight.h"
 
 int fight(gamer *player, mobs *enemy)
 {

@@ -1,4 +1,4 @@
-#include "dangeon.h"
+#include "../include/dangeon.h"
 
 static char definition_of_icon(enum enemy icon)
 {

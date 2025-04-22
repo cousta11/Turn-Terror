@@ -1,4 +1,4 @@
-#include "sup_func.h"
+#include "../include/sup_func.h"
 
 int rand_to(int min, int max)
 {

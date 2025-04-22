@@ -1,4 +1,9 @@
-#include "../include/main.h"
+#include "../include/sup_func.h"
+#include "../include/dangeon.h"
+#include "../include/fight.h"
+#define CHAR '@'
+#define SIZE 1000
+#define WALL '#'
 
 void mvplayer(const int mod_y, const int mod_x,
 		const int max_y, const int max_x, struct gamer *player)
@@ -17,8 +22,10 @@ void mvplayer(const int mod_y, const int mod_x,
 int main(int argc, char *argv[])
 {
 	int max_y, max_x, work_bw;
+	int i, j;
 	mobs *enemies = NULL;
 	gamer player;
+	int game_place[SIZE][SIZE];
 	/* terminal preparation */
     initscr();
     getmaxyx(stdscr, max_y, max_x);
@@ -44,9 +51,11 @@ int main(int argc, char *argv[])
 	player.max_hp = player.lvl * 2;
 	player.max_mp = player.lvl * 4;
 	/* end tmporarily */
-	mvaddch(player.y, player.x, CHAR);
-
+	for(i = 0; i < SIZE; i++)
+		for(j = 0; j < SIZE; j++)
+			game_place[i][j] = WALL;
 	dangeon_genereted(max_y, max_x, &enemies, player);
+	mvaddch(player.y, player.x, CHAR);
 	while(1) {	
 		summon_enemy(enemies);
 		switch(getch()) {

@@ -1,4 +1,4 @@
-SRC = src/main.c src/dangeon.c src/fight.c src/sup_func.c
+SRC = src/main.c src/dangeon.c src/sup_func.c
 OBJ = $(SRC:.c=.o)
 CC = clang
 CFLAGS = -Wall -Wextra -g -O2

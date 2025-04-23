@@ -1,21 +1,22 @@
 #include "../include/sup_func.h"
 #include "../include/dangeon.h"
-#include "../include/fight.h"
-#define CHAR '@'
-#define SIZE 1000
-#define WALL '#'
 
-void mvplayer(const int mod_y, const int mod_x,
-		const int max_y, const int max_x, struct gamer *player)
+void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {
 	int y = player->y;
 	int x = player->x;
-	if(y + mod_y > max_y || y + mod_y < 0)
+	y += mod_y;
+	x += mod_x;
+	if(y > SIZE - 1 || y < 0)
 		return;
-	if(x + mod_x > max_x || x + mod_x < 0)
+	if(x > SIZE - 1 || x < 0)
 		return;
+	if(arr[y][x] != SPACE)
+		return;
+	mvaddch(player->y, player->x, SPACE);
 	player->y += mod_y;
 	player->x += mod_x;
+	mvaddch(player->y, player->x, CHAR);
 	return;
 }
 
@@ -23,15 +24,14 @@ int main(int argc, char *argv[])
 {
 	int max_y, max_x, work_bw;
 	int i, j;
-	mobs *enemies = NULL;
 	gamer player;
 	int game_place[SIZE][SIZE];
 	/* terminal preparation */
     initscr();
     getmaxyx(stdscr, max_y, max_x);
 	if(max_y < 24 || max_x < 80) {
-		fprintf(stderr, "Error: terminal must be >= 24x80\n");
 		endwin();
+		printf("Error: terminal must be >= 24x80\n", stderr);
 		return 1;
 	}
 	work_bw = !has_colors();
@@ -54,34 +54,27 @@ int main(int argc, char *argv[])
 	for(i = 0; i < SIZE; i++)
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
-	dangeon_genereted(max_y, max_x, &enemies, player);
+	dangeon_genereted();
 	mvaddch(player.y, player.x, CHAR);
 	while(1) {	
-		summon_enemy(enemies);
 		switch(getch()) {
 			case 'q':
 				endwin();
 				return 0;
 				break;
 			case 'h':
-				mvplayer(0, -1, max_y, max_x, &player);
+				mvplayer(0, -1, game_place, &player);
 				break;
 			case 'j':
-				mvplayer(1, 0, max_y, max_x, &player);
+				mvplayer(1, 0, game_place, &player);
 				break;
 			case 'k':
-				mvplayer(-1, 0, max_y, max_x, &player);
+				mvplayer(-1, 0, game_place, &player);
 				break;
 			case 'l':
-				mvplayer(0, 1, max_y, max_x, &player);
+				mvplayer(0, 1, game_place, &player);
 				break;
 		}
-		if(start_figth(&player, enemies)) {
-			endwin();
-			return 0;
-		}
-		clear();
-		mvaddch(player.y, player.x, CHAR);
 		refresh();
 	}
 

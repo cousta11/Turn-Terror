@@ -7,6 +7,11 @@
 #include <ncurses.h>
 #include <time.h>
 
+#define CHAR '@'
+#define SIZE 1000
+#define WALL '#'
+#define SPACE ' '
+
 struct gamer {
 	int y;
 	int x;
@@ -17,13 +22,6 @@ struct gamer {
 	int mp;
 };
 typedef struct gamer gamer;
-struct mobs {
-	int y;
-	int x;
-	char icon;
-	struct mobs *next;
-};
-typedef struct mobs mobs;
 enum enemy {zero, start, goblin, skeleton, troll, end};
 
 int rand_to(int min, int max);

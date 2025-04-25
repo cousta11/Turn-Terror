@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	for(i = 0; i < SIZE; i++)
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
-	dangeon_genereted(&player.y, &player.x, &game_place);
+	dangeon_genereted(&player.y, &player.x, game_place);
 	mvaddch(player.y, player.x, CHAR);
 	while(1) {	
 		switch(getch()) {

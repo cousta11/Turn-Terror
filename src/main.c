@@ -44,8 +44,6 @@ int main(int argc, char *argv[])
     curs_set(0);
 	srand(time(NULL));
 
-	player.y = max_y-- / 2;
-	player.x = max_x-- / 2;
 	/* tmporarily */
 	player.lvl = 1;
 	player.max_hp = player.lvl * 2;
@@ -54,7 +52,7 @@ int main(int argc, char *argv[])
 	for(i = 0; i < SIZE; i++)
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
-	dangeon_genereted();
+	dangeon_genereted(&player.y, &player.x, &game_place);
 	mvaddch(player.y, player.x, CHAR);
 	while(1) {	
 		switch(getch()) {

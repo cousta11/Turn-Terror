@@ -3,37 +3,37 @@
 
 void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {
-	int y = player->y;
-	int x = player->x;
-	y += mod_y;
-	x += mod_x;
-	if(y >= SIZE || y < 1)
-		return;
-	if(x >= SIZE || x < 1)
-		return;
-	if(arr[y][x] != SPACE)
-		return;
-	mvaddch(player->y, player->x, SPACE);
+	int y = player->y + mod_y;
+	int x = player->x + mod_x;
+    if(out_the_barrier(y, x) || arr[y][x] != SPACE)
+        return;
+
+	mvaddch(player->scr_y, player->scr_x, SPACE);
 	player->y += mod_y;
 	player->x += mod_x;
-	mvaddch(player->y, player->x, CHAR);
+	player->scr_y += mod_y;
+	player->scr_x += mod_x;
+	mvaddch(player->scr_y, player->scr_x, CHAR);
 	return;
 }
-void scr_replay(int game_place[SIZE][SIZE], gamer player, int max_y, int max_x)
+void scr_replay(int game_place[SIZE][SIZE], gamer *player, int max_y, int max_x)
 {
-	int y = max_y/2, x = max_x/2, i, j;
-	y = player.y - y;
-	x = player.x - x;
+	int y = player->y - (max_y/2);
+	int x = player->x - (max_x/2), i, j;
+	clear();
 	for(i = 0; i < max_y; i++) {
 		for(j = 0; j < max_x; j++) {
 			mvaddch(i, j, game_place[y + i][x + j]);
 		}
 	}
+	player->scr_y = max_y/2;
+	player->scr_x = max_x/2;
+	mvaddch(player->scr_y, player->scr_x, CHAR);
 }
 
 int main(int argc, char *argv[])
 {
-	int max_y, max_x, work_bw;
+	int max_y, max_x/*, work_bw*/;
 	int i, j;
 	gamer player;
 	int game_place[SIZE][SIZE];
@@ -64,9 +64,8 @@ int main(int argc, char *argv[])
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
 	dangeon_genereted(&player.y, &player.x, game_place);
-	/*mvaddch(player.y, player.x, CHAR);*/
-	scr_replay(game_place, player, max_y, max_x);
-	while(1) {	
+	scr_replay(game_place, &player, max_y, max_x);
+	for(i = 0; i != -1; i++){	
 		switch(getch()) {
 			case 'q':
 				endwin();
@@ -84,6 +83,10 @@ int main(int argc, char *argv[])
 			case 'l':
 				mvplayer(0, 1, game_place, &player);
 				break;
+		}
+		if(i == 10) {
+			scr_replay(game_place, &player, max_y, max_x);
+			i = 0;
 		}
 		refresh();
 	}

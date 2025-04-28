@@ -3,5 +3,6 @@
 
 #include "sup_func.h"
 void dangeon_genereted(int *start_y, int *start_x, int game_place[SIZE][SIZE]);
+int out_the_barrier(int y, int x);
 
 #endif

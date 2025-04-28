@@ -15,6 +15,8 @@
 struct gamer {
 	int y;
 	int x;
+	int scr_y;
+	int scr_x;
 	int lvl;
 	int max_hp;
 	int hp;

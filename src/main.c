@@ -20,15 +20,22 @@ void scr_replay(int game_place[SIZE][SIZE], gamer *player, int max_y, int max_x)
 {
 	int y = player->y - (max_y/2);
 	int x = player->x - (max_x/2), i, j;
+	if (y < 0) y = 0;
+    if (x < 0) x = 0;
+    if (y + max_y >= SIZE) y = SIZE - max_y;
+    if (x + max_x >= SIZE) x = SIZE - max_x;
 	clear();
 	for(i = 0; i < max_y; i++) {
 		for(j = 0; j < max_x; j++) {
 			mvaddch(i, j, game_place[y + i][x + j]);
 		}
 	}
-	player->scr_y = max_y/2;
-	player->scr_x = max_x/2;
-	mvaddch(player->scr_y, player->scr_x, CHAR);
+    player->scr_y = player->y - y;
+    player->scr_x = player->x - x;
+    if (player->scr_y >= 0 && player->scr_y < max_y &&
+        player->scr_x >= 0 && player->scr_x < max_x) {
+        mvaddch(player->scr_y, player->scr_x, CHAR);
+    }
 }
 
 int main(int argc, char *argv[])

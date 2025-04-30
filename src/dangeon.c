@@ -1,4 +1,5 @@
 #include "../include/dangeon.h"
+#include "../include/screen.h"
 
 int out_the_barrier(int y, int x)
 {
@@ -29,12 +30,16 @@ void in_the_direction(int *y, int *x)
 /* algoritm Drunkard’s Walk */
 void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 {
-	int i;
+	int i, enemy[3] = {'G', 'O', 'T'};
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
 		in_the_direction(&y, &x);
-		game_place[y][x] = SPACE;
+		if(i != 10)
+			game_place[y][x] = SPACE;
+		else if(game_place[y][x] == WALL)
+			game_place[y][x] = enemy[rand_to(0, 2)];
 	}
+	game_place[y][x] = FORESTER;
 }
 void dangeon_genereted(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 {
@@ -42,5 +47,16 @@ void dangeon_genereted(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 	y = *start_y = rand_to(1, SIZE);
 	x = *start_x = rand_to(1, SIZE);
 	drunkard(y, x, 50 * SIZE, game_place);
+
+}
+void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
+		gamer *player)
+{
+	int i, j;
+	for(i = 0; i < SIZE; i++)
+		for(j = 0; j < SIZE; j++)
+			game_place[i][j] = WALL;
+	dangeon_genereted(&player->y, &player->x, game_place);
+	scr_replay(game_place, player, max_y, max_x);
 
 }

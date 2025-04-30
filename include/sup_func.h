@@ -11,20 +11,16 @@
 #define SIZE 1000
 #define WALL '#'
 #define SPACE ' '
+#define FORESTER '^'
 
 struct gamer {
-	int y;
-	int x;
-	int scr_y;
-	int scr_x;
+	int y, x;
+	int scr_y, scr_x;
 	int lvl;
-	int max_hp;
-	int hp;
-	int max_mp;
-	int mp;
+	int max_hp, hp;
+	int max_mp, mp;
 };
 typedef struct gamer gamer;
-enum enemy {zero, start, goblin, skeleton, troll, end};
 
 int rand_to(int min, int max);
 

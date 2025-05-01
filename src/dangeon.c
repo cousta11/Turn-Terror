@@ -34,10 +34,12 @@ void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
 		in_the_direction(&y, &x);
-		if(i != 10)
-			game_place[y][x] = SPACE;
-		else if(game_place[y][x] == WALL)
-			game_place[y][x] = enemy[rand_to(0, 2)];
+		if(game_place[y][x] == WALL) {
+			if(rand_to(1, 100) < 2)
+				game_place[y][x] = enemy[rand_to(0, 1)];
+			else
+				game_place[y][x] = SPACE;
+		}
 	}
 	game_place[y][x] = FORESTER;
 }

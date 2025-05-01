@@ -31,6 +31,8 @@ void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE])
 				case WALL: atmvaddch(i, j, WALL, 1); break;
 				case FORESTER: atmvaddch(i, j, FORESTER, 3); break;
 				case 'T': atmvaddch(i, j, 'T', 2); break;
+				case 'O': atmvaddch(i, j, 'O', 2); break;
+				case 'G': atmvaddch(i, j, 'G', 2); break;
 			}
 		}
 	}

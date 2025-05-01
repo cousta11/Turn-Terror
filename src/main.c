@@ -2,7 +2,7 @@
 #include "../include/dangeon.h"
 #include "../include/screen.h"
 
-int main(int argc, char *argv[])
+int main()
 {
 	int max_y, max_x, work_bw;
 	int i;

@@ -30,13 +30,13 @@ void in_the_direction(int *y, int *x)
 /* algoritm Drunkard’s Walk */
 void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 {
-	int i, enemy[3] = {'G', 'O', 'T'};
+	int i, ENEMIES;
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
 		in_the_direction(&y, &x);
 		if(game_place[y][x] == WALL) {
 			if(rand_to(1, 100) < 2)
-				game_place[y][x] = enemy[rand_to(0, 1)];
+				game_place[y][x] = enemies[rand_to(0, SIZE_ENEMIES - 1)];
 			else
 				game_place[y][x] = SPACE;
 		}
@@ -45,11 +45,13 @@ void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 }
 void dangeon_genereted(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 {
-	int y, x;
-	y = *start_y = rand_to(1, SIZE);
-	x = *start_x = rand_to(1, SIZE);
+	int y, x, i, j;
+	y = *start_y = rand_to(1 + 2, SIZE - 2);
+	x = *start_x = rand_to(1 + 2, SIZE - 2);
 	drunkard(y, x, 50 * SIZE, game_place);
-
+	for(i = -2; i < 3; i++)
+		for(j = -2; j < 3; j++)
+			game_place[y + i][x + j] = SPACE;
 }
 void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
 		gamer *player)

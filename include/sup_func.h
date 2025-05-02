@@ -12,6 +12,8 @@
 #define WALL '#'
 #define SPACE ' '
 #define FORESTER '^'
+#define ENEMIES enemies[3] = {'G', 'O', 'T'}
+#define SIZE_ENEMIES 3
 
 struct gamer {
 	int y, x;

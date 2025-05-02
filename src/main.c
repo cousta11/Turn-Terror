@@ -1,6 +1,7 @@
 #include "../include/sup_func.h"
 #include "../include/dangeon.h"
 #include "../include/screen.h"
+#include "../include/fight.h"
 
 int main()
 {
@@ -63,6 +64,20 @@ int main()
 			scr_replay(game_place, &player, max_y, max_x);
 			i = 0;
 		} else i++;
+		if(start_fight(player.y, player.x, game_place)) {
+			if(!fight(&player, game_place)) {
+				clear();
+				attrset(COLOR_PAIR(2));
+				mvaddstr(max_y/2, max_x/2 - 10/2, "You lose!\n");
+				mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
+				if(getch() == 'q') {
+					endwin();
+					return 0;
+				} else
+					preparing_the_dungeon(max_y, max_x, game_place, &player);
+			} else 
+				scr_replay(game_place, &player, max_y, max_x);
+		}
 		refresh();
 	}
 

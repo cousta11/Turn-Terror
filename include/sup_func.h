@@ -18,9 +18,7 @@
 struct gamer {
 	int y, x;
 	int scr_y, scr_x;
-	int lvl;
 	int max_hp, hp;
-	int max_mp, mp;
 };
 typedef struct gamer gamer;
 

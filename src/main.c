@@ -56,11 +56,6 @@ int main()
 				mvplayer(0, 1, game_place, &player);
 				break;
 		}
-		if(i == 10) {
-    		getmaxyx(stdscr, max_y, max_x);
-			scr_replay(game_place, &player, max_y, max_x);
-			i = 0;
-		} else i++;
 		if(start_fight(player.y, player.x, &enemy_y, &enemy_x, game_place)) {
 			combat = fight(max_y, max_x, enemy_y, enemy_x, &player, game_place);
 			if(!combat) {
@@ -78,6 +73,11 @@ int main()
 				scr_replay(game_place, &player, max_y, max_x);
 			}
 		}
+		if(i == 10) {
+    		getmaxyx(stdscr, max_y, max_x);
+			scr_replay(game_place, &player, max_y, max_x);
+			i = 0;
+		} else i++;
 		refresh();
 	}
 

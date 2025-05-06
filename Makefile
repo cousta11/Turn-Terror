@@ -4,7 +4,6 @@ CC = clang
 CFLAGS = -Wall -Wextra -g -O2
 EXEC = Turn-Terror
 
-
 .PHONY: all clean
 
 all: $(EXEC)

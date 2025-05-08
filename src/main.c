@@ -30,8 +30,7 @@ int main()
     noecho();
     curs_set(0);
 	srand(time(NULL));
-	player.max_hp = 5;
-	player.hp = player.max_hp;
+	player.hp = MAX_HP;
 	preparing_the_dungeon(max_y, max_x, game_place, &player);
 
 	while(1){	
@@ -66,8 +65,10 @@ int main()
 				if(getch() == 'q') {
 					endwin();
 					return 0;
-				} else
+				} else {
 					preparing_the_dungeon(max_y, max_x, game_place, &player);
+					player.hp = MAX_HP;
+				}
 			} else {
     			getmaxyx(stdscr, max_y, max_x);
 				scr_replay(game_place, &player, max_y, max_x);

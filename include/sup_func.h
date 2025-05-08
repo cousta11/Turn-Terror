@@ -14,11 +14,12 @@
 #define FORESTER '^'
 #define ENEMIES enemies[3] = {'G', 'O', 'T'}
 #define SIZE_ENEMIES 3
+#define MAX_HP 5
 
 struct gamer {
 	int y, x;
 	int scr_y, scr_x;
-	int max_hp, hp;
+	int hp;
 };
 typedef struct gamer gamer;
 

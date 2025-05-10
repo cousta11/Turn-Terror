@@ -1,5 +1,5 @@
 #include "../include/sup_func.h"
-#include "../include/dangeon.h"
+#include "../include/dungeon.h"
 
 void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {

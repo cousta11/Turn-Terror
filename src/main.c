@@ -1,7 +1,32 @@
 #include "../include/sup_func.h"
-#include "../include/dangeon.h"
+#include "../include/dungeon.h"
 #include "../include/screen.h"
 #include "../include/fight.h"
+
+void winner(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+{
+	clear();
+	attrset(COLOR_PAIR(2));
+	mvaddstr(max_y/2, max_x/2 - 12/2, "You winner!\n");
+	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
+	if(getch() == 'q') {
+		endwin();
+	} else {
+		preparing_the_dungeon(max_y, max_x, game_place, player);
+		player->hp = MAX_HP;
+	}
+}
+int finish(int x, int y, int game_place[SIZE][SIZE])
+{
+	int i, j;
+	for(i = -1; i < 2; i++) {
+		for(j = -1; j < 2; j++) {
+			if(game_place[x + i][y + j] == FORESTER)
+				return 1;
+		}
+	}
+	return 0;
+}
 
 int main()
 {
@@ -14,7 +39,7 @@ int main()
     getmaxyx(stdscr, max_y, max_x);
 	if(max_y < 24 || max_x < 80) {
 		endwin();
-		printf("Error: terminal must be >= 24x80\n", stderr);
+		fprintf(stderr, "Error: terminal must be >= 24x80\n");
 		return 1;
 	}
 	work_bw = !has_colors();
@@ -79,6 +104,8 @@ int main()
 			scr_replay(game_place, &player, max_y, max_x);
 			i = 0;
 		} else i++;
+		if(finish(player.y, player.x, game_place))
+			winner(max_y, max_x, &player, game_place);
 		refresh();
 	}
 

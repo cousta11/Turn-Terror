@@ -1,4 +1,4 @@
-#include "../include/dangeon.h"
+#include "../include/dungeon.h"
 #include "../include/screen.h"
 
 int out_the_barrier(int y, int x)
@@ -43,7 +43,7 @@ void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 	}
 	game_place[y][x] = FORESTER;
 }
-void dangeon_genereted(int *start_y, int *start_x, int game_place[SIZE][SIZE])
+void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 {
 	int y, x, i, j;
 	y = *start_y = rand_to(1 + 2, SIZE - 2);
@@ -60,7 +60,7 @@ void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
 	for(i = 0; i < SIZE; i++)
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
-	dangeon_genereted(&player->y, &player->x, game_place);
+	dungeon_generated(&player->y, &player->x, game_place);
 	scr_replay(game_place, player, max_y, max_x);
 
 }

@@ -6,7 +6,7 @@
 void winner(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	clear();
-	attrset(COLOR_PAIR(2));
+	attrset(COLOR_PAIR(4));
 	mvaddstr(max_y/2, max_x/2 - 12/2, "You winner!\n");
 	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
 	if(getch() == 'q') {

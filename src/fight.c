@@ -18,9 +18,10 @@ int start_fight(const int y, const int x, int *enemy_y, int *enemy_x,
 	}
 	return 0;
 }
-int battle_line(int y, int x, int lenght, int hit_zone)
+int battle_line(int y, int x, int lenght, int hit_zone, int *hx)
 {
-	int i, hx = rand_to(x + 1, x + lenght - hit_zone - 1);
+	int i;
+	*hx = rand_to(x + 1, x + lenght - hit_zone - 1);
 	attrset(COLOR_PAIR(3));
 	mvaddch(y, x, '[');
 	for(i = lenght - 2; i > 0; i--) {
@@ -28,7 +29,7 @@ int battle_line(int y, int x, int lenght, int hit_zone)
 	}
 	addch(']');
 	attrset(COLOR_PAIR(4));
-	move(y, hx);
+	move(y, *hx);
 	for(i = 0; i < hit_zone; i++) {
 		addch('-');
 	}
@@ -43,37 +44,39 @@ void hp_display(int max_y, int max_x, int player_hp, int enemy_hp)
 	mvprintw(max_y/2 + 4/2 - 1, max_x/2 - max_x/4, "HP: %d", enemy_hp);
 	addstr("   ");
 }
-void hit(int max_y, int max_x, int player_hp, int enemy_hp, int *mob1, int *mob2)
+void hit(int max_y, int max_x, int *player_hp, int *enemy_hp,
+		int *mob1, int *mob2, int *hx)
 {
-	int i, lenght = max_x/2;
-	hp_display(max_y, max_x, player_hp, enemy_hp);
+	int i, lenght = max_x/2, x;
+	hp_display(max_y, max_x, *player_hp, *enemy_hp);
 	for(i = 1; i < lenght - 2; i++) {
 		attrset(COLOR_PAIR(3));
 		mvaddch(max_y/2 + 4/2, max_x/2 - max_x/4 + i, '=');
 		mvaddch(max_y/2 + 4/2, max_x/2 - max_x/4 + 1 + i, WALL);
 		if(getch() == ' ') {
-			*mob1 -= 1;
-			break;
+			x = getcurx(stdscr);
+			if(x >= *hx && x <= *hx + lenght) {
+				*enemy_hp -= 1;
+				break;
+			}
 		}
 		refresh();
 	}
-	if(i == lenght - 2)
-		*mob2 -= 1;
 }
 int fight(int max_y, int max_x, int enemy_y, int enemy_x,
 		gamer *player, int game_place[SIZE][SIZE])
 {
-	int hit_zone = max_x/2/10;
-	int enemy_hp = 15;
+	int hit_zone = max_x/2/10, hx, enemy_hp = 15;
 	clear();
 	attrset(COLOR_PAIR(2));
 	mvaddch(max_y/3, max_x/2 - 1, game_place[enemy_y][enemy_x]);
-	timeout(100);
+	timeout(60);
 	while(enemy_hp > 0 && player->hp > 0) {
-		battle_line(max_y/2 + 4/2, max_x/2 - max_x/4, max_x/2, hit_zone);
-		hit(max_y, max_x, player->hp, enemy_hp, &enemy_hp, &player->hp);
-		battle_line(max_y/2 + 4/2, max_x/2 - max_x/4, max_x/2, hit_zone);
-		hit(max_y, max_x, player->hp, enemy_hp, &player->hp, &enemy_hp);
+		battle_line(max_y/2 + 4/2, max_x/2 - max_x/4, max_x/2, hit_zone, &hx);
+		hit(max_y, max_x, &player->hp, &enemy_hp, &enemy_hp, &player->hp, &hx);
+		if(player->hp <= 0 || enemy_hp <= 0) break;
+		battle_line(max_y/2 + 4/2, max_x/2 - max_x/4, max_x/2, hit_zone, &hx);
+		hit(max_y, max_x, &player->hp, &enemy_hp, &player->hp, &enemy_hp, &hx);
 		refresh();
 	}
 	if(player->hp < 1) {

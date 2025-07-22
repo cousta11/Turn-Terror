@@ -10,6 +10,7 @@ int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE],
 			return 1;
 			break;
 		case REST_K:
+			player->hp = MAX_HP;
 			preparing_the_dungeon(max_y, max_x, game_place, player);
 			break;
 		case LEFT_K:

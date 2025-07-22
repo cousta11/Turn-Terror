@@ -17,31 +17,25 @@ int finish(int x, int y, int game_place[SIZE][SIZE])
 	return 0;
 }
 int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
-	int combat, enemy_y, enemy_x, i = 0;
+	int i = 0;
 	for(;;) {
-			if(move_gamer(max_y, max_x, game_place, player))
+		if(move_gamer(max_y, max_x, game_place, player))
+			return 0;
+		if(start_fight(max_y, max_x, player, game_place))
+			if(lose_screen(max_y, max_x, player, game_place))
 				return 0;
 
-			if(start_fight(player->y, player->x, &enemy_y, &enemy_x, game_place)) {
-				combat = fight(max_y, max_x, enemy_y, enemy_x, player, game_place);
-				if(!combat) {
-					lose_screen(max_y, max_x, player, game_place);
-				} else {
-	    			getmaxyx(stdscr, max_y, max_x);
-					scr_replay(game_place, player, max_y, max_x);
-				}
-			}
+		if(i == 10) {
+    		getmaxyx(stdscr, max_y, max_x);
+			scr_replay(game_place, player, max_y, max_x);
+			i = 0;
+		} else i++;
 
-			if(i == 10) {
-	    		getmaxyx(stdscr, max_y, max_x);
-				scr_replay(game_place, player, max_y, max_x);
-				i = 0;
-			} else i++;
-			if(finish(player->y, player->x, game_place))
-				if(winner_screen(max_y, max_x, player, game_place))
-					return 0;
-			refresh();
-		}
+		if(finish(player->y, player->x, game_place))
+			if(winner_screen(max_y, max_x, player, game_place))
+				return 0;
+		refresh();
+	}
 }
 
 int main(int argc, char *argv[])

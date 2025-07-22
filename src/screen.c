@@ -47,8 +47,8 @@ int lose_screen(int max_y, int max_x, gamer *player,
 	if(getch() == 'q') {
 		return 1;
 	} else {
-		preparing_the_dungeon(max_y, max_x, game_place, player);
 		player->hp = MAX_HP;
+		preparing_the_dungeon(max_y, max_x, game_place, player);
 	}
 	return 0;
 }

@@ -1,24 +1,9 @@
 #include "../include/main.h"
 #include "../include/fight.h"
 #include "../include/rand_to.h"
+#include "../include/screen.h"
 
-int start_fight(const int y, const int x, int *enemy_y, int *enemy_x,
-		const int game_place[SIZE][SIZE])
-{
-	int ENEMIES, i, j, k;
-	for(i = -2; i < 3; i++) {
-		for(j = -2; j < 3; j++) {
-			for(k = 0; k < SIZE_ENEMIES; k++) {
-				if(game_place[y + i][x + j] == enemies[k]) {
-					*enemy_y = y + i;
-					*enemy_x = x + j;
-					return 1;
-				}
-			}
-		}
-	}
-	return 0;
-}
+
 int battle_line(int y, int x, int lenght, int hit_zone, int *hx)
 {
 	int i;
@@ -90,7 +75,26 @@ int fight(int max_y, int max_x, int enemy_y, int enemy_x,
 	}
 	game_place[enemy_y][enemy_x] = SPACE;
 	timeout(-1);
+	scr_replay(game_place, player, max_y, max_x);
 	if(player->hp < 1)
-		return 0;
-	return 1;
+		return 1;
+	return 0;
+}
+int start_fight(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+{
+	int ENEMIES, i, j, k, enemy_y, enemy_x;
+	int y = player->y, x = player->x;
+	for(i = -2; i < 3; i++) {
+		for(j = -2; j < 3; j++) {
+			for(k = 0; k < SIZE_ENEMIES; k++) {
+				if(game_place[y + i][x + j] == enemies[k]) {
+					enemy_y = y + i;
+					enemy_x = x + j;
+					if(fight(max_y, max_x, enemy_y, enemy_x, player, game_place))
+						return 1;
+				}
+			}
+		}
+	}
+	return 0;
 }

@@ -1,6 +1,57 @@
-#include "../include/sup_func.h"
+#include "../include/main.h"
 #include "../include/dungeon.h"
 
+int init_screen(int *max_y, int *max_x, int work_bw) {
+    initscr();
+    getmaxyx(stdscr, *max_y, *max_x);
+	if(*max_y < 24 || *max_x < 80) {
+		endwin();
+		fprintf(stderr, "Error: terminal must be >= 24x80\n");
+		return 1;
+	}
+	if(work_bw == 0) {
+		start_color();
+		init_pair(1, COLOR_WHITE, COLOR_BLACK);
+		init_pair(2, COLOR_RED, COLOR_BLACK);
+		init_pair(3, COLOR_MAGENTA, COLOR_BLACK);
+		init_pair(4, COLOR_GREEN, COLOR_BLACK);
+		attrset(COLOR_PAIR(1));
+	}
+	cbreak();
+    noecho();
+    curs_set(0);
+	return 0;
+}
+int winner_screen(int max_y, int max_x, gamer *player,
+		int game_place[SIZE][SIZE])
+{
+	clear();
+	attrset(COLOR_PAIR(4));
+	mvaddstr(max_y/2, max_x/2 - 12/2, "You winner!\n");
+	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
+	if(getch() == 'q') {
+		return 1;
+	} else {
+		preparing_the_dungeon(max_y, max_x, game_place, player);
+		player->hp = MAX_HP;
+	}
+	return 0;
+}
+int lose_screen(int max_y, int max_x, gamer *player,
+		int game_place[SIZE][SIZE])
+{
+	clear();
+	attrset(COLOR_PAIR(2));
+	mvaddstr(max_y/2, max_x/2 - 10/2, "You lose!\n");
+	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
+	if(getch() == 'q') {
+		return 1;
+	} else {
+		preparing_the_dungeon(max_y, max_x, game_place, player);
+		player->hp = MAX_HP;
+	}
+	return 0;
+}
 void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {
 	int y = player->y + mod_y;

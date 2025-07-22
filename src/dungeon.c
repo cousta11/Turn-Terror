@@ -1,5 +1,7 @@
 #include "../include/dungeon.h"
 #include "../include/screen.h"
+#include "../include/rand_to.h"
+
 
 int out_the_barrier(int y, int x)
 {

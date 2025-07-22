@@ -1,5 +1,6 @@
-#include "../include/sup_func.h"
+#include "../include/main.h"
 #include "../include/fight.h"
+#include "../include/rand_to.h"
 
 int start_fight(const int y, const int x, int *enemy_y, int *enemy_x,
 		const int game_place[SIZE][SIZE])

@@ -23,6 +23,4 @@ struct gamer {
 };
 typedef struct gamer gamer;
 
-int rand_to(int min, int max);
-
 #endif

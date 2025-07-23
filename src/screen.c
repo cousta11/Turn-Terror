@@ -29,12 +29,10 @@ int winner_screen(int max_y, int max_x, gamer *player,
 	attrset(COLOR_PAIR(4));
 	mvaddstr(max_y/2, max_x/2 - 12/2, "You winner!\n");
 	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
-	if(getch() == 'q') {
+	if(getch() == 'q')
 		return 1;
-	} else {
+	else
 		preparing_the_dungeon(max_y, max_x, game_place, player);
-		player->hp = MAX_HP;
-	}
 	return 0;
 }
 int lose_screen(int max_y, int max_x, gamer *player,
@@ -44,12 +42,10 @@ int lose_screen(int max_y, int max_x, gamer *player,
 	attrset(COLOR_PAIR(2));
 	mvaddstr(max_y/2, max_x/2 - 10/2, "You lose!\n");
 	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
-	if(getch() == 'q') {
+	if(getch() == 'q')
 		return 1;
-	} else {
-		player->hp = MAX_HP;
+	else
 		preparing_the_dungeon(max_y, max_x, game_place, player);
-	}
 	return 0;
 }
 void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)

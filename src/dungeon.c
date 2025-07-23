@@ -64,5 +64,7 @@ void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
 			game_place[i][j] = WALL;
 	dungeon_generated(&player->y, &player->x, game_place);
 	scr_replay(game_place, player, max_y, max_x);
-
+	player->dz_y = player->scr_y;
+	player->dz_x = player->scr_x;
+	player->hp = MAX_HP;
 }

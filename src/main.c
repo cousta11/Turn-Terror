@@ -5,6 +5,21 @@
 #include "../include/fight.h"
 #include "../include/control.h"
 
+/* dead zone camera */
+int dz_camera(gamer *player)
+{
+	int step = DZ_SPACE/2, res = 0;
+	if(player->scr_y > (player->dz_y + step)) res = 1;
+	else if(player->scr_y < (player->dz_y - step)) res = 1;
+	else if(player->scr_x > (player->dz_x + step)) res = 1;
+	else if(player->scr_x < (player->dz_x - step)) res = 1;
+	if(res) {
+		player->dz_y = player->scr_y;
+		player->dz_x = player->scr_x;
+		return 1;
+	}
+	return 0;
+}
 int finish(int x, int y, int game_place[SIZE][SIZE])
 {
 	int i, j;
@@ -17,7 +32,7 @@ int finish(int x, int y, int game_place[SIZE][SIZE])
 	return 0;
 }
 int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
-	int i = 0;
+	/*int i = 0;*/
 	for(;;) {
 		if(move_gamer(max_y, max_x, game_place, player))
 			return 0;
@@ -25,11 +40,13 @@ int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
 			if(lose_screen(max_y, max_x, player, game_place))
 				return 0;
 
-		if(i == 10) {
+		if(dz_camera(player))
+			scr_replay(game_place, player, max_y, max_x);
+		/*if(i == 10) {
     		getmaxyx(stdscr, max_y, max_x);
 			scr_replay(game_place, player, max_y, max_x);
 			i = 0;
-		} else i++;
+		} else i++;*/
 
 		if(finish(player->y, player->x, game_place))
 			if(winner_screen(max_y, max_x, player, game_place))
@@ -56,7 +73,6 @@ int main(int argc, char *argv[])
 		free(game_place);
 		return 1;
 	}
-	player.hp = MAX_HP;
 	preparing_the_dungeon(max_y, max_x, game_place, &player);
 
 	res = game(max_y, max_x, game_place, &player);	

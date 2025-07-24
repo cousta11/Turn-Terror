@@ -5,10 +5,10 @@
 
 int out_the_barrier(int y, int x)
 {
-	return y >= SIZE || y < 1 || x >= SIZE || x < 1;
+	return y >= SIZE || y < 0 || x >= SIZE || x < 0;
 }
 /* in the direction and going beyond the boundaries */
-void in_the_direction(int *y, int *x)
+void direction(int *y, int *x)
 {
 	switch(rand_to(1, 4)) {
 		case 1:
@@ -35,7 +35,7 @@ void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 	int i, ENEMIES;
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
-		in_the_direction(&y, &x);
+		direction(&y, &x);
 		if(game_place[y][x] == WALL) {
 			if(rand_to(1, 100) < 2)
 				game_place[y][x] = enemies[rand_to(0, SIZE_ENEMIES - 1)];

@@ -52,10 +52,10 @@ void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {
 	int y = player->y + mod_y;
 	int x = player->x + mod_x;
-    if(out_the_barrier(y, x) || arr[y][x] != SPACE)
+    if(out_the_barrier(y, x) /*|| arr[y][x] != SPACE*/)
         return;
 	attrset(COLOR_PAIR(1));
-	mvaddch(player->scr_y, player->scr_x, SPACE);
+	mvaddch(player->scr_y, player->scr_x, arr[player->y][player->x]);
 	player->y += mod_y;
 	player->x += mod_x;
 	player->scr_y += mod_y;
@@ -80,6 +80,7 @@ void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE])
 				case 'T': atmvaddch(i, j, 'T', 2); break;
 				case 'O': atmvaddch(i, j, 'O', 2); break;
 				case 'G': atmvaddch(i, j, 'G', 2); break;
+				case 'H': atmvaddch(i, j, 'H', 4); break;
 			}
 		}
 	}

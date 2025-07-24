@@ -12,8 +12,8 @@
 #define WALL '#'
 #define SPACE ' '
 #define FORESTER '^'
-#define ENEMIES enemies[3] = {'T', 'G', 'O'}
-#define SIZE_ENEMIES 3
+#define ENEMIES enemies[] = {'T', 'G', 'O', 'H'}
+#define SIZE_ENEMIES 4
 #define DZ_SPACE 5
 #define MAX_HP 5
 

@@ -58,11 +58,17 @@ void hit(int max_y, int max_x, int *player_hp, int *enemy_hp, int *hx)
 int fight(int max_y, int max_x, int enemy_y, int enemy_x,
 		gamer *player, int game_place[SIZE][SIZE])
 {
-	int hit_zone = max_x/2/10, hx, enemy_hp;
+	int hit_zone = max_x/2/10, hx, enemy_hp = 0;
 	switch(game_place[enemy_y][enemy_x]) {
 		case 'G': enemy_hp = 5; break;
 		case 'O': enemy_hp = 8; break;
 		case 'T': enemy_hp = 15; break;
+		case 'H':
+			if((player->hp + 1) <= MAX_HP)
+				player->hp++;
+			else
+				return 0;
+			break;
 	}
 	clear();
 	attrset(COLOR_PAIR(2));
@@ -86,6 +92,8 @@ int start_fight(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 	int y = player->y, x = player->x;
 	for(i = -2; i < 3; i++) {
 		for(j = -2; j < 3; j++) {
+        	if(y + i < 0 || y + i >= SIZE || x + j < 0 || x + j >= SIZE)
+        	    continue;
 			for(k = 0; k < SIZE_ENEMIES; k++) {
 				if(game_place[y + i][x + j] == enemies[k]) {
 					enemy_y = y + i;

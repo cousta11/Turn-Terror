@@ -32,13 +32,13 @@ void direction(int *y, int *x)
 /* algoritm Drunkard’s Walk */
 void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 {
-	int i, ENEMIES;
+	int i, enemy[] = ENEMIES;
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
 		direction(&y, &x);
 		if(game_place[y][x] == WALL) {
 			if(rand_to(1, 100) < 2)
-				game_place[y][x] = enemies[rand_to(0, SIZE_ENEMIES - 1)];
+				game_place[y][x] = enemy[rand_to(0, sizeof(enemy)/sizeof(int)- 1)];
 			else
 				game_place[y][x] = SPACE;
 		}
@@ -51,7 +51,6 @@ void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 	y = *start_y = rand_to(1 + 2, SIZE - 2);
 	x = *start_x = rand_to(1 + 2, SIZE - 2);
 	drunkard(y, x, 50 * SIZE, game_place);
-	game_place[y + 2][x + 2] = FORESTER;
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)
 			if(game_place[y + i][x + j] != FORESTER)

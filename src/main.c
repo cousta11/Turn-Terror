@@ -24,15 +24,31 @@ int dz_camera(gamer *player)
 	}
 	return 0;
 }
+int finish(int game_place[SIZE][SIZE], gamer *player)
+{
+	int i, j;
+	for(i = -1; i <= 1; i++) {
+		for(j = -1; j <= 1; j++) {
+			if(out_the_barrier(player->y + i, player->x + j))
+				continue;
+			if(game_place[player->y + i][player->x + j] == FORESTER)
+				return 1;
+		}
+	}
+	return 0;
+}
 int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
 	for(;;) {
-		if(move_gamer(max_y, max_x, game_place, player))
-			return 0;
 		if(start_fight(max_y, max_x, player, game_place))
 			if(lose_screen(player, game_place))
 				return 0;
 		if(dz_camera(player))
 			scr_replay(game_place, player, max_y, max_x);
+		if(finish(game_place, player))
+			if(winner_screen(player, game_place))
+				return 0;
+		if(move_gamer(max_y, max_x, game_place, player))
+			return 0;
 		refresh();
 	}
 }

@@ -7,15 +7,8 @@
 #define UP_K 'k'
 #define DOWN_K 'j'
 #define REST_K 'r'
-/*#define QUIT_K 'q'
-#define LEFT_K 'a'
-#define RIGHT_K 'd'
-#define UP_K 'w'
-#define DOWN_K 's'
-#define REST_K 'r'*/
 
 #include "../include/main.h"
-int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE],
-		gamer *player);
+int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player);
 
 #endif

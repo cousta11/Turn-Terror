@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include "../include/control.h"
 #include "../include/dungeon.h"
 #include "../include/screen.h"

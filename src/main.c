@@ -1,4 +1,8 @@
+#include <ncurses.h>
 #include <string.h>
+#include <time.h>
+#include <stdlib.h>
+
 #include "../include/main.h"
 #include "../include/dungeon.h"
 #include "../include/screen.h"
@@ -20,31 +24,15 @@ int dz_camera(gamer *player)
 	}
 	return 0;
 }
-int finish(int x, int y, int game_place[SIZE][SIZE])
-{
-	int i, j;
-	for(i = -1; i < 2; i++) {
-		for(j = -1; j < 2; j++) {
-            if(y + i < 0 || y + i >= SIZE || x + j < 0 || x + j >= SIZE)
-                continue;
-			if(game_place[y + i][x + j] == FORESTER)
-				return 1;
-		}
-	}
-	return 0;
-}
 int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
 	for(;;) {
 		if(move_gamer(max_y, max_x, game_place, player))
 			return 0;
 		if(start_fight(max_y, max_x, player, game_place))
-			if(lose_screen(max_y, max_x, player, game_place))
+			if(lose_screen(player, game_place))
 				return 0;
 		if(dz_camera(player))
 			scr_replay(game_place, player, max_y, max_x);
-		if(finish(player->y, player->x, game_place))
-			if(winner_screen(max_y, max_x, player, game_place))
-				return 0;
 		refresh();
 	}
 }

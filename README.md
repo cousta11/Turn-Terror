@@ -1,3 +1,0 @@
-# Turn-Terror
-TUI roguelike
-***

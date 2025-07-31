@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "../include/rand_to.h"
 
 int rand_to(int min, int max)

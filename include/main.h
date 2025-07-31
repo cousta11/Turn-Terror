@@ -1,12 +1,6 @@
 #ifndef SUP_FUNC_H
 #define SUP_FUNC_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <ncurses.h>
-#include <time.h>
-
 #define CHAR '@'
 #define SIZE 1000
 #define WALL '#'

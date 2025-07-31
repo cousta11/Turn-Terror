@@ -51,9 +51,11 @@ void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 	y = *start_y = rand_to(1 + 2, SIZE - 2);
 	x = *start_x = rand_to(1 + 2, SIZE - 2);
 	drunkard(y, x, 50 * SIZE, game_place);
+	game_place[y + 2][x + 2] = FORESTER;
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)
-			game_place[y + i][x + j] = SPACE;
+			if(game_place[y + i][x + j] != FORESTER)
+				game_place[y + i][x + j] = SPACE;
 }
 void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
 		gamer *player)

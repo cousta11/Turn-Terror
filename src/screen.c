@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include "../include/main.h"
 #include "../include/dungeon.h"
 
@@ -22,37 +23,36 @@ int init_screen(int *max_y, int *max_x, int work_bw) {
     curs_set(0);
 	return 0;
 }
-int winner_screen(int max_y, int max_x, gamer *player,
-		int game_place[SIZE][SIZE])
-{
+int end_screen(gamer *player, int game_place[SIZE][SIZE], int col, char *str) {
+	int max_y, max_x;
+	char buf[] = "quit[q] restart[r/any]\n";
+	getmaxyx(stdscr, max_y, max_x);
 	clear();
-	attrset(COLOR_PAIR(4));
-	mvaddstr(max_y/2, max_x/2 - 12/2, "You winner!\n");
-	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
+	attrset(COLOR_PAIR(col));
+	mvaddstr(max_y/2, max_x/2 - sizeof(str)/2, str);
+	mvaddstr(max_y/2 + 1, max_x/2 - sizeof(buf)/2, buf);
 	if(getch() == 'q')
 		return 1;
-	else
-		preparing_the_dungeon(max_y, max_x, game_place, player);
+	preparing_the_dungeon(max_y, max_x, game_place, player);
 	return 0;
 }
-int lose_screen(int max_y, int max_x, gamer *player,
-		int game_place[SIZE][SIZE])
+int lose_screen(gamer *player, int game_place[SIZE][SIZE])
 {
-	clear();
-	attrset(COLOR_PAIR(2));
-	mvaddstr(max_y/2, max_x/2 - 10/2, "You lose!\n");
-	mvaddstr(max_y/2 + 1, max_x/2 - 24/2, "quit[q] restart[r/any]\n");
-	if(getch() == 'q')
+	if(end_screen(player, game_place, 2, "You lose!\n"))
 		return 1;
-	else
-		preparing_the_dungeon(max_y, max_x, game_place, player);
+	return 0;
+}
+int winner_screen(gamer *player, int game_place[SIZE][SIZE])
+{
+	if(end_screen(player, game_place, 4, "You winner!\n"))
+		return 1;
 	return 0;
 }
 void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
 {
 	int y = player->y + mod_y;
 	int x = player->x + mod_x;
-    if(out_the_barrier(y, x) /*|| arr[y][x] != SPACE*/)
+    if(out_the_barrier(y, x) || arr[y][x] != SPACE)
         return;
 	attrset(COLOR_PAIR(1));
 	mvaddch(player->scr_y, player->scr_x, arr[player->y][player->x]);

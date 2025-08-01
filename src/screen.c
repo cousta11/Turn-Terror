@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include "../include/main.h"
+#include "../include/screen.h"
 #include "../include/dungeon.h"
 
 int init_screen(int *max_y, int *max_x, int work_bw) {
@@ -33,7 +34,7 @@ int end_screen(gamer *player, int game_place[SIZE][SIZE], int col, char *str) {
 	mvaddstr(max_y/2 + 1, max_x/2 - sizeof(buf)/2, buf);
 	if(getch() == 'q')
 		return 1;
-	preparing_the_dungeon(max_y, max_x, game_place, player);
+	preparing_the_dungeon(max_y, max_x, player, game_place);
 	return 0;
 }
 int lose_screen(gamer *player, int game_place[SIZE][SIZE])
@@ -48,14 +49,14 @@ int winner_screen(gamer *player, int game_place[SIZE][SIZE])
 		return 1;
 	return 0;
 }
-void mvplayer(int mod_y, int mod_x, int arr[SIZE][SIZE], struct gamer *player)
+void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	int y = player->y + mod_y;
 	int x = player->x + mod_x;
-    if(out_the_barrier(y, x) || arr[y][x] != SPACE)
+    if(out_the_barrier(y, x) || game_place[y][x] != SPACE)
         return;
 	attrset(COLOR_PAIR(1));
-	mvaddch(player->scr_y, player->scr_x, arr[player->y][player->x]);
+	mvaddch(player->scr_y, player->scr_x, game_place[player->y][player->x]);
 	player->y += mod_y;
 	player->x += mod_x;
 	player->scr_y += mod_y;
@@ -85,7 +86,7 @@ void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE])
 		}
 	}
 }
-void scr_replay(int game_place[SIZE][SIZE], gamer *player, int max_y, int max_x)
+void scr_replay(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	int y = player->y - (max_y/2);
 	int x = player->x - (max_x/2);

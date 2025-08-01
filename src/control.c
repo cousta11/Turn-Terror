@@ -4,8 +4,7 @@
 #include "../include/dungeon.h"
 #include "../include/screen.h"
 
-int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE],
-		gamer *player)
+int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	switch(getch()) {
 		case QUIT_K:
@@ -13,19 +12,19 @@ int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE],
 			break;
 		case REST_K:
 			player->hp = MAX_HP;
-			preparing_the_dungeon(max_y, max_x, game_place, player);
+			preparing_the_dungeon(max_y, max_x, player, game_place);
 			break;
 		case LEFT_K:
-			mvplayer(0, -1, game_place, player);
+			mvplayer(0, -1, player, game_place);
 			break;
 		case DOWN_K:
-			mvplayer(1, 0, game_place, player);
+			mvplayer(1, 0, player, game_place);
 			break;
 		case UP_K:
-			mvplayer(-1, 0, game_place, player);
+			mvplayer(-1, 0, player, game_place);
 			break;
 		case RIGHT_K:
-			mvplayer(0, 1, game_place, player);
+			mvplayer(0, 1, player, game_place);
 			break;
 	}
 	return 0;

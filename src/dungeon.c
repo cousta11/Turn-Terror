@@ -56,15 +56,15 @@ void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 			if(game_place[y + i][x + j] != FORESTER)
 				game_place[y + i][x + j] = SPACE;
 }
-void preparing_the_dungeon(int max_y, int max_x, int game_place[SIZE][SIZE],
-		gamer *player)
+void preparing_the_dungeon(int max_y, int max_x, gamer *player,
+		int game_place[SIZE][SIZE])
 {
 	int i, j;
 	for(i = 0; i < SIZE; i++)
 		for(j = 0; j < SIZE; j++)
 			game_place[i][j] = WALL;
 	dungeon_generated(&player->y, &player->x, game_place);
-	scr_replay(game_place, player, max_y, max_x);
+	scr_replay(max_y, max_x, player, game_place);
 	player->dz_y = player->scr_y;
 	player->dz_x = player->scr_x;
 	player->hp = MAX_HP;

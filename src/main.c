@@ -24,7 +24,7 @@ int dz_camera(gamer *player)
 	}
 	return 0;
 }
-int finish(int game_place[SIZE][SIZE], gamer *player)
+int finish(gamer *player, int game_place[SIZE][SIZE])
 {
 	int i, j;
 	for(i = -1; i <= 1; i++) {
@@ -37,17 +37,18 @@ int finish(int game_place[SIZE][SIZE], gamer *player)
 	}
 	return 0;
 }
-int game(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player) {
+int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+{
 	for(;;) {
 		if(start_fight(max_y, max_x, player, game_place))
 			if(lose_screen(player, game_place))
 				return 0;
 		if(dz_camera(player))
-			scr_replay(game_place, player, max_y, max_x);
-		if(finish(game_place, player))
+			scr_replay(max_y, max_x, player, game_place);
+		if(finish(player, game_place))
 			if(winner_screen(player, game_place))
 				return 0;
-		if(move_gamer(max_y, max_x, game_place, player))
+		if(move_gamer(max_y, max_x, player, game_place))
 			return 0;
 		refresh();
 	}
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
 	}
 	srand(time(NULL));
 	for(i = 1; i <= argc - 1; i++) {
-		if(/*argc >= 2 &&*/ strcmp(argv[i], "-bw") == 0)
+		if(strcmp(argv[i], "-bw") == 0)
 			work_bw = 1;
 		else
 			work_bw = has_colors();
@@ -73,9 +74,9 @@ int main(int argc, char *argv[])
 		free(game_place);
 		return 1;
 	}
-	preparing_the_dungeon(max_y, max_x, game_place, &player);
+	preparing_the_dungeon(max_y, max_x, &player, game_place);
 
-	res = game(max_y, max_x, game_place, &player);	
+	res = game(max_y, max_x, &player, game_place);	
 
 	endwin();
 	return res;

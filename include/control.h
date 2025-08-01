@@ -9,6 +9,6 @@
 #define REST_K 'r'
 
 #include "../include/main.h"
-int move_gamer(int max_y, int max_x, int game_place[SIZE][SIZE], gamer *player);
+int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE]);
 
 #endif

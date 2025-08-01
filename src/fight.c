@@ -7,7 +7,6 @@
 
 int fight(gamer *player, int enemy)
 {
-	clear();
 
 	return 0;
 }
@@ -31,6 +30,6 @@ int start_fight(int max_y, int max_x, gamer *player,
 			}
 		}
 	}
-	scr_replay(game_place, player, max_y, max_x);
+	scr_replay(max_y, max_x, player, game_place);
 	return 0;
 }

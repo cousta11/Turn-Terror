@@ -6,15 +6,16 @@
 #define WALL '#'
 #define SPACE ' '
 #define FORESTER '^'
-#define ENEMIES {'T', 'G', 'O', 'H'}
+#define ENEMIES {'T', 'G', 'O'}
+#define OBJECT {'H'}
 #define DZ_SPACE 5
-#define MAX_HP 5
+#define START_MAX_HP 5
 
 struct gamer {
 	int y, x;
 	int scr_y, scr_x;
 	int dz_y, dz_x;
-	int hp;
+	int hp, max_hp;
 };
 typedef struct gamer gamer;
 typedef struct win win;

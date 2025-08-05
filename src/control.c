@@ -10,8 +10,10 @@ int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 		case QUIT_K:
 			return 1;
 			break;
+		case INTERACTION_K:
+			return 2;
+			break;
 		case REST_K:
-			player->hp = MAX_HP;
 			preparing_the_dungeon(max_y, max_x, player, game_place);
 			break;
 		case LEFT_K:

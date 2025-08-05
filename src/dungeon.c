@@ -32,13 +32,16 @@ void direction(int *y, int *x)
 /* algoritm Drunkard’s Walk */
 void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 {
-	int i, enemy[] = ENEMIES;
+	int i, enemy[] = ENEMIES, obj[] = OBJECT, r;
 	game_place[y][x] = SPACE;
 	for(i = 0; i < steps; i++) {
 		direction(&y, &x);
 		if(game_place[y][x] == WALL) {
-			if(rand_to(1, 100) < 2)
-				game_place[y][x] = enemy[rand_to(0, sizeof(enemy)/sizeof(int)- 1)];
+			r = rand_to(1, 1000);
+			if(r < 20)
+				game_place[y][x] = enemy[rand_to(0, sizeof(enemy)/sizeof(int) - 1)];
+			else if(r <= 23)
+				game_place[y][x] = obj[rand_to(0, sizeof(obj)/sizeof(int)- 1)];
 			else
 				game_place[y][x] = SPACE;
 		}
@@ -51,6 +54,7 @@ void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 	y = *start_y = rand_to(1 + 2, SIZE - 2);
 	x = *start_x = rand_to(1 + 2, SIZE - 2);
 	drunkard(y, x, 50 * SIZE, game_place);
+	game_place[*start_y + 2][*start_x + 2] = FORESTER;
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)
 			if(game_place[y + i][x + j] != FORESTER)
@@ -67,5 +71,6 @@ void preparing_the_dungeon(int max_y, int max_x, gamer *player,
 	scr_replay(max_y, max_x, player, game_place);
 	player->dz_y = player->scr_y;
 	player->dz_x = player->scr_x;
-	player->hp = MAX_HP;
+	player->max_hp = START_MAX_HP;
+	player->hp = START_MAX_HP;
 }

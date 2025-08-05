@@ -1,7 +1,55 @@
 #include <ncurses.h>
+#include <panel.h>
+#include <stdlib.h>
+
 #include "../include/main.h"
 #include "../include/screen.h"
 #include "../include/dungeon.h"
+
+struct win {
+	enum type_win type;
+	WINDOW *w;
+	PANEL *panel;
+
+	struct win *next;
+};
+void free_display(win *window)
+{
+	win *tmp;
+	while(window) {
+		tmp = window;
+		switch(window->type) {
+			case place:
+				delwin(window->w);
+				break;
+			case panel:
+				del_panel(window->panel);
+				delwin(window->w);
+				break;
+			case hp_bar:
+				del_panel(window->panel);
+				delwin(window->w);
+				break;
+		}
+		window = window->next;
+		free(tmp);
+	}
+}
+void hp_display(int win_y, int win_x, int len_y, int len_x, char *str,
+		int color, win **window)
+{
+	win *tmp = malloc(sizeof(win));
+	tmp->type = hp_bar;
+	tmp->w = newwin(len_y, len_x, win_y, win_x);
+	wattron(tmp->w, COLOR_PAIR(color));
+	mvwprintw(tmp->w, 0, 0, "%s", str);
+	tmp->panel = new_panel(tmp->w);
+    update_panels();
+    doupdate();
+	wrefresh(tmp->w);
+	tmp->next = *window;
+	*window = tmp;
+}
 
 int init_screen(int *max_y, int *max_x, int work_bw) {
     initscr();

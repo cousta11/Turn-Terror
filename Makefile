@@ -16,7 +16,7 @@ TARGET := Turn-Terror
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^ -lncurses -lmenu
+	$(CC) $(CFLAGS) -o $@ $^ -lncurses -lpanel -lmenu
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(@D)

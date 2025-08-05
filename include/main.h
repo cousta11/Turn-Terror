@@ -17,5 +17,7 @@ struct gamer {
 	int hp;
 };
 typedef struct gamer gamer;
+typedef struct win win;
+enum type_win {panel, place, hp_bar};
 
 #endif

@@ -79,5 +79,6 @@ int main(int argc, char *argv[])
 	res = game(max_y, max_x, &player, game_place);	
 
 	endwin();
+	free(game_place);
 	return res;
 }

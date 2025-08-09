@@ -49,7 +49,6 @@ void drunkard(int y, int x, int steps, int game_place[SIZE][SIZE])
 	}
 	game_place[y][x] = FORESTER;
 }
-
 void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 {
 	int y, x, i, j;

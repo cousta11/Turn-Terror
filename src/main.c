@@ -3,11 +3,11 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "../include/main.h"
-#include "../include/dungeon.h"
-#include "../include/screen.h"
-#include "../include/fight.h"
-#include "../include/control.h"
+#include "main.h"
+#include "dungeon.h"
+#include "screen.h"
+#include "fight.h"
+#include "control.h"
 
 /* dead zone camera */
 int dz_camera(gamer *player)

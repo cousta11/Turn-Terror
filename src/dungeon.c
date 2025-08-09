@@ -1,7 +1,7 @@
-#include "../include/main.h"
-#include "../include/dungeon.h"
-#include "../include/screen.h"
-#include "../include/rand_to.h"
+#include "main.h"
+#include "dungeon.h"
+#include "screen.h"
+#include "rand_to.h"
 
 
 int out_the_barrier(int y, int x)

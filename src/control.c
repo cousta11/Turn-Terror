@@ -1,8 +1,8 @@
 #include <ncurses.h>
 
-#include "../include/control.h"
-#include "../include/dungeon.h"
-#include "../include/screen.h"
+#include "control.h"
+#include "dungeon.h"
+#include "screen.h"
 
 int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 {

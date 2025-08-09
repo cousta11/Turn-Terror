@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/screen.h"
-#include "../include/dungeon.h"
+#include "screen.h"
+#include "dungeon.h"
 
 struct enemy {
 	char *name;

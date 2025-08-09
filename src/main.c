@@ -38,7 +38,7 @@ int interaction(gamer *player, int game_place[SIZE][SIZE])
 						return 1;
 					break;
 				case 'H':
-					if(healing(1, player))
+					if(healing(1, &(player->hp), &(player->max_hp)))
 						game_place[player->y + i][player->x +j] = SPACE;
 					break;
 			}
@@ -94,5 +94,6 @@ int main(int argc, char *argv[])
 
 	endwin();
 	free(game_place);
+	free(player);
 	return res;
 }

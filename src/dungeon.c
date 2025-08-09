@@ -1,3 +1,4 @@
+#include "../include/main.h"
 #include "../include/dungeon.h"
 #include "../include/screen.h"
 #include "../include/rand_to.h"
@@ -54,7 +55,6 @@ void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE])
 	y = *start_y = rand_to(1 + 2, SIZE - 2);
 	x = *start_x = rand_to(1 + 2, SIZE - 2);
 	drunkard(y, x, 50 * SIZE, game_place);
-	game_place[*start_y + 2][*start_x + 2] = FORESTER;
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)
 			if(game_place[y + i][x + j] != FORESTER)

@@ -19,36 +19,53 @@ void free_display(win *window)
 	while(window) {
 		tmp = window;
 		switch(window->type) {
-			case place:
-				delwin(window->w);
-				break;
+			case start: break;
+			case end: break;
+			case place: break;
 			case panel:
 				del_panel(window->panel);
-				delwin(window->w);
 				break;
-			case hp_bar:
+			case hp_player:
 				del_panel(window->panel);
-				delwin(window->w);
+				break;
+			case hp_enemy:
+				del_panel(window->panel);
 				break;
 		}
+		delwin(window->w);
 		window = window->next;
 		free(tmp);
 	}
 }
-void hp_display(int win_y, int win_x, int len_y, int len_x, char *str,
-		int color, win **window)
+win *display(enum type_win type, win *window)
 {
-	win *tmp = malloc(sizeof(win));
-	tmp->type = hp_bar;
-	tmp->w = newwin(len_y, len_x, win_y, win_x);
-	wattron(tmp->w, COLOR_PAIR(color));
-	mvwprintw(tmp->w, 0, 0, "%s", str);
-	tmp->panel = new_panel(tmp->w);
-    update_panels();
-    doupdate();
+	win *tmp = window;
+	while(tmp) {
+		if(tmp->type == type)
+			break;
+		tmp = tmp->next;
+	}
+	return tmp;
+}
+void hp_display(int win_y, int len_y, int len_x, char *str,
+		int color, enum type_win type, win **window)
+{
+	win *tmp = display(type, *window);
+	if(tmp) 
+		mvwprintw(tmp->w, 0, 0, "%s", str);
+	else {
+		tmp = malloc(sizeof(win));
+		tmp->type = type;
+		tmp->w = newwin(len_y, len_x, win_y, 0);
+		wattron(tmp->w, COLOR_PAIR(color));
+		mvwprintw(tmp->w, 0, 0, "%s", str);
+		tmp->panel = new_panel(tmp->w);
+		tmp->next = *window;
+		*window = tmp;
+    	update_panels();
+    	doupdate();
+	}
 	wrefresh(tmp->w);
-	tmp->next = *window;
-	*window = tmp;
 }
 
 int init_screen(int *max_y, int *max_x, int work_bw) {
@@ -101,7 +118,7 @@ void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	int y = player->y + mod_y;
 	int x = player->x + mod_x;
-    if(out_the_barrier(y, x) || game_place[y][x] != SPACE)
+    if(out_the_barrier(y, x) || game_place[y][x] == WALL)
         return;
 	attrset(COLOR_PAIR(1));
 	mvaddch(player->scr_y, player->scr_x, game_place[player->y][player->x]);

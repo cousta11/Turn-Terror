@@ -4,6 +4,6 @@
 #include "main.h"
 int start_fight(int max_y, int max_x, gamer *player,
 		int game_place[SIZE][SIZE]);
-int healing(int mod, gamer *player);
+int healing(int mod, int *hp, int *max_hp);
 
 #endif

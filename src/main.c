@@ -7,6 +7,7 @@
 #include "dungeon.h"
 #include "screen.h"
 #include "fight.h"
+#include "fight_event.h"
 #include "control.h"
 
 /* dead zone camera */

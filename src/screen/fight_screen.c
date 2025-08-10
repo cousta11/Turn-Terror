@@ -1,17 +1,10 @@
 #include <ncurses.h>
-#include <stdlib.h>
 #include <panel.h>
+#include <stdlib.h>
 
 #include "main.h"
 #include "screen.h"
 
-struct win {
-	enum type_win type;
-	WINDOW *w;
-	PANEL *panel;
-
-	struct win *next;
-};
 void free_display(win *window)
 {
 	win *tmp;

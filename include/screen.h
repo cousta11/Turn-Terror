@@ -1,7 +1,18 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <ncurses.h>
+#include <panel.h>
+
 #include "main.h"
+
+struct win {
+	enum type_win type;
+	WINDOW *w;
+	PANEL *panel;
+
+	struct win *next;
+};
 
 void hp_display(int win_y, int len_y, int len_x, char *str,
 		int color, enum type_win type, win **window);

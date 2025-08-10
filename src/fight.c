@@ -58,33 +58,50 @@ struct enemy *who_enemy(char c)
 	}
 	return enemy;
 }
-enum type_win *fight_control(gamer *player, struct enemy *enemy)
+enum type_win fight_control(gamer *player, struct enemy *enemy)
 {
-	enum type_win *res = malloc(sizeof(enum type_win));
-	*res = end;
 	switch(getch()) {
 		case 'q': enemy->hp = 0; break;
-		case 'j': enemy->hp--; *res = hp_enemy; break;
-		case 'l': player->hp--; *res = hp_player; break;
+		case 'j': enemy->hp--; return hp_enemy; break;
+		case 'l': player->hp--; return hp_player; break;
 	}
-	return res;
+	return end;
+}
+void event(int max_y, int max_x, enum type_win w, win **window, gamer *player,
+		struct enemy *enemy)
+{
+	int str_len = max_x;
+	char *str = malloc(str_len);
+	switch(w) {
+		case start: break;
+		case panel: break;
+		case place: break;
+		case end: break;
+		case hp_player:
+			hp_str(str, str_len, player->hp, player->max_hp);
+			hp_display(max_y - 1, 1, strlen(str), str, 4, hp_player, window);
+			break;
+		case hp_enemy:
+			hp_str(str, str_len, enemy->hp, enemy->max_hp);
+			hp_display(1, 1, strlen(str), str, 2, hp_enemy, window);
+			break;
+	}
+	free(str);
 }
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
-	char *str = malloc(max_x);
-	int str_len = max_x;
+	enum type_win step;
 	win *window = NULL;
 	clear();
+	for(step = start; step < end; step++)
+		event(max_y, max_x, step, &window, player, enemy);
+	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, 0, enemy->name);
 	while(player->hp > 0 && enemy->hp > 0) {
-		hp_str(str, str_len, player->hp, player->max_hp);
-		hp_display(max_y - 1, 1, strlen(str), str, 4, hp_player, &window);
-		hp_str(str, str_len, enemy->hp, enemy->max_hp);
-		hp_display(1, 1, strlen(str), str, 2, hp_enemy, &window);
-		free(fight_control(player, enemy));
+		step = fight_control(player, enemy);
+		event(max_y, max_x, step, &window, player, enemy);
 	}
 	free(enemy);
-	free(str);
 	free_display(window);
 	if(player->hp <= 0)
 		return 1;

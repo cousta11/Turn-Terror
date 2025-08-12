@@ -16,8 +16,8 @@ struct win {
 	struct win *next;
 };
 
-void hp_display(int win_y, int len_y, int len_x, char *str,
-		int color, enum type_win type, win **window);
+/*void hp_display(int win_y, int len_y, int len_x, char *str,
+		int color, enum type_win type, win **window);*/
 void free_display(win *window);
 int init_screen(int *max_y, int *max_x, int work_bw);
 void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[SIZE][SIZE]);

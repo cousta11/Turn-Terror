@@ -1,4 +1,4 @@
-#include <ncurses.h>
+/*#include <ncurses.h>
 #include <panel.h>
 #include <menu.h>
 #include <stdlib.h>
@@ -62,4 +62,4 @@ void hp_display(int win_y, int len_y, int len_x, char *str,
     	doupdate();
 	}
 	wrefresh(tmp->w);
-}
+}*/

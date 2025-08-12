@@ -41,6 +41,7 @@ void event(int max_y, int max_x, enum type_win w, win **window, gamer *player,
 	switch(w) {
 		case start: break;
 		case panel: break;
+		case menu: break;
 		case place: break;
 		case end: break;
 		case hp_player:

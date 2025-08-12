@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <panel.h>
+#include <menu.h>
 #include <stdlib.h>
 
 #include "main.h"
@@ -14,6 +15,9 @@ void free_display(win *window)
 			case start: break;
 			case end: break;
 			case place: break;
+			case menu: 
+				free_menu(window->menu);
+				free(window->items);
 			case panel:
 				del_panel(window->panel);
 				break;

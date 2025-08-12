@@ -1,5 +1,7 @@
 #include <stdlib.h>
+#include <string.h>
 
+#include "control.h"
 #include "fight.h"
 #include "fight_event.h"
 #include "screen.h"
@@ -10,9 +12,9 @@
 enum type_win fight_control(gamer *player, struct enemy *enemy)
 {
 	switch(getch()) {
-		case 'q': enemy->hp = 0; break;
-		case 'j': enemy->hp--; return hp_enemy; break;
-		case 'l': player->hp--; return hp_player; break;
+		case QUIT_K: enemy->hp = 0; break;
+		case DOWN_K: enemy->hp--; return hp_enemy; break;
+		case RIGHT_K: player->hp--; return hp_player; break;
 	}
 	return end;
 }
@@ -21,10 +23,10 @@ int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 	enum type_win step;
 	win *window = NULL;
 	clear();
+	wattron(stdscr, COLOR_PAIR(2));
+	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
 	for(step = start; step < end; step++)
 		event(max_y, max_x, step, &window, player, enemy);
-	wattron(stdscr, COLOR_PAIR(2));
-	mvaddstr(0, 0, enemy->name);
 	while(player->hp > 0 && enemy->hp > 0) {
 		step = fight_control(player, enemy);
 		event(max_y, max_x, step, &window, player, enemy);

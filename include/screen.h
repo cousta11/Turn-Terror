@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 #include <panel.h>
+#include <menu.h>
 
 #include "main.h"
 
@@ -10,7 +11,8 @@ struct win {
 	enum type_win type;
 	WINDOW *w;
 	PANEL *panel;
-
+	ITEM **items;
+	MENU *menu;
 	struct win *next;
 };
 

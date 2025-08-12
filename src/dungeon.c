@@ -73,4 +73,6 @@ void preparing_the_dungeon(int max_y, int max_x, gamer *player,
 	player->dz_x = player->scr_x;
 	player->max_hp = START_MAX_HP;
 	player->hp = START_MAX_HP;
+	player->dmg = BASE_DMG;
+	player->armor = BASE_ARMOR;
 }

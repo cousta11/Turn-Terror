@@ -10,15 +10,18 @@
 #define OBJECT {'H'}
 #define DZ_SPACE 5
 #define START_MAX_HP 5
+#define BASE_DMG 3
+#define BASE_ARMOR 2
 
 struct gamer {
 	int y, x;
 	int scr_y, scr_x;
 	int dz_y, dz_x;
 	int hp, max_hp;
+	int dmg, armor;
 };
 typedef struct gamer gamer;
 typedef struct win win;
-enum type_win {start = 0, panel, place, hp_player, hp_enemy, end};
+enum type_win {start = 0, panel, menu, place, hp_player, hp_enemy, end};
 
 #endif

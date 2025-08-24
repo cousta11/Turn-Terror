@@ -1,7 +1,4 @@
-#ifndef MENU_H
-#define MENU_H
-
-void create_menu();
-void del_menu();
+#ifndef MENU_API_H
+#define MENU_API_H
 
 #endif

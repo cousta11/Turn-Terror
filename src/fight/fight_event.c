@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "menu_api.h"
 #include "fight.h"
 #include "screen.h"
 

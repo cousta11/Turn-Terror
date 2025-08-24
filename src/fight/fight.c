@@ -17,11 +17,17 @@ enum type_win fight_control(gamer *player, struct enemy *enemy)
 	}
 	return end;
 }
+void test_menu()
+{
+	/* comming soon */
+	getch();
+}
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
 	enum type_win step;
 	win_t *window = NULL;
 	clear();
+	test_menu();
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
 	for(step = start; step < end; step++)

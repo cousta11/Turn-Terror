@@ -2,7 +2,6 @@
 
 #include "dungeon.h"
 
-
 int init_screen(int *max_y, int *max_x, int work_bw) {
     initscr();
     getmaxyx(stdscr, *max_y, *max_x);

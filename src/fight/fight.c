@@ -1,13 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
+#include <ncurses.h>
 
+#include "main.h"
 #include "control.h"
-#include "fight.h"
 #include "fight_event.h"
-#include "screen.h"
 #include "dungeon.h"
 #include "who_enemy.h"
-
 
 enum type_win fight_control(gamer *player, struct enemy *enemy)
 {
@@ -21,7 +20,7 @@ enum type_win fight_control(gamer *player, struct enemy *enemy)
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
 	enum type_win step;
-	win *window = NULL;
+	win_t *window = NULL;
 	clear();
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);

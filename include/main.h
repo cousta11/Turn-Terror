@@ -21,7 +21,6 @@ struct gamer {
 	int dmg, armor;
 };
 typedef struct gamer gamer;
-typedef struct win win;
 enum type_win {start = 0, panel, menu, place, hp_player, hp_enemy, end};
 
 #endif

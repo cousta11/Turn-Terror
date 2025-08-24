@@ -6,60 +6,49 @@
 #include "main.h"
 #include "screen.h"
 
-void free_display(win *window)
+win_t *display(enum type_win type, win_t *window)
 {
-	win *tmp;
-	while(window) {
-		tmp = window;
-		switch(window->type) {
-			case start: break;
-			case end: break;
-			case place: break;
-			case menu: 
-				free_menu(window->menu);
-				free(window->items);
-			case panel:
-				del_panel(window->panel);
-				break;
-			case hp_player:
-				del_panel(window->panel);
-				break;
-			case hp_enemy:
-				del_panel(window->panel);
-				break;
-		}
-		delwin(window->w);
-		window = window->next;
-		free(tmp);
-	}
-}
-win *display(enum type_win type, win *window)
-{
-	win *tmp = window;
+	win_t *tmp = window;
 	while(tmp) {
-		if(tmp->type == type)
+		if(win_type(tmp) == type)
 			break;
-		tmp = tmp->next;
+		tmp = win_next(tmp);
 	}
 	return tmp;
 }
 void hp_display(int win_y, int len_y, int len_x, char *str,
-		int color, enum type_win type, win **window)
+		int color, enum type_win type, win_t **window)
 {
-	win *tmp = display(type, *window);
+	win_t *tmp = display(type, *window);
 	if(tmp) 
-		mvwprintw(tmp->w, 0, 0, "%s", str);
+		mvwprintw(win_window(tmp), 0, 0, "%s", str);
 	else {
-		tmp = malloc(sizeof(win));
-		tmp->type = type;
-		tmp->w = newwin(len_y, len_x, win_y, 0);
-		wattron(tmp->w, COLOR_PAIR(color));
-		mvwprintw(tmp->w, 0, 0, "%s", str);
-		tmp->panel = new_panel(tmp->w);
-		tmp->next = *window;
+		tmp = malloc(size_win_t());
+		win_set_type(tmp, type);
+		win_set_window(tmp, newwin(len_y, len_x, win_y, 0));
+		wattron(win_window(tmp), COLOR_PAIR(color));
+		mvwprintw(win_window(tmp), 0, 0, "%s", str);
+		win_set_interface(tmp, new_panel(win_window(tmp)));
+		win_set_next(tmp, *window);
 		*window = tmp;
     	update_panels();
     	doupdate();
 	}
-	wrefresh(tmp->w);
+	wrefresh(win_window(tmp));
+}
+void free_display(win_t *window)
+{
+	if(window)
+		free_display(win_next(window));
+	switch(win_type(window)) {
+		case start: break;
+		case place: break;
+		case menu: break;
+		case panel: del_panel(win_interface(window)); break;
+		case hp_player: del_panel(win_interface(window)); break;
+		case hp_enemy: del_panel(win_interface(window)); break;
+		case end: break;
+	}
+	delwin(win_window(window));
+	free(window);
 }

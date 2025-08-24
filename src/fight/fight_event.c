@@ -10,7 +10,7 @@ int healing(int mod, int *hp, int *max_hp)
 	if(*hp == *max_hp)
 		return 0;
 	if(*hp + mod > *max_hp)
-		*hp = *max_hp;
+		hp = max_hp;
 	else
 		*hp += mod;
 	return 1;
@@ -33,25 +33,28 @@ char *hp_str(char str[], int str_len, int hp, int max_hp)
 		str[str_len/2 - buf_len/2 + i] = buf[i];
 	return str;
 }
-void event(int max_y, int max_x, enum type_win w, win **window, gamer *player,
+void event_hp(int y, enum type_win w, int hp, int max_hp, int str_len, int col,
+		win_t **window)
+{
+	char *str = malloc(str_len);
+	hp_str(str, str_len, hp, max_hp);
+	hp_display(y, 1, strlen(str), str, col, w, window);
+	free(str);
+}
+void event(int max_y, int max_x, enum type_win w, win_t **window, gamer *player,
 		struct enemy *enemy)
 {
-	int str_len = max_x;
-	char *str = malloc(str_len);
 	switch(w) {
 		case start: break;
 		case panel: break;
-		case menu: break;
 		case place: break;
-		case end: break;
+		case menu: break;
 		case hp_player:
-			hp_str(str, str_len, player->hp, player->max_hp);
-			hp_display(max_y - 1, 1, strlen(str), str, 4, hp_player, window);
+			event_hp(max_y - 1 , w, player->hp, player->max_hp, max_x, 4, window);
 			break;
 		case hp_enemy:
-			hp_str(str, str_len, enemy->hp, enemy->max_hp);
-			hp_display(1, 1, strlen(str), str, 2, hp_enemy, window);
+			event_hp(1, w, enemy->hp, enemy->max_hp, max_x, 2, window);
 			break;
+		case end: break;
 	}
-	free(str);
 }

@@ -3,6 +3,7 @@
 #include <ncurses.h>
 
 #include "main.h"
+#include "menu_api.h"
 #include "control.h"
 #include "fight_event.h"
 #include "dungeon.h"
@@ -17,17 +18,20 @@ enum type_win fight_control(gamer *player, struct enemy *enemy)
 	}
 	return end;
 }
-void test_menu()
+void test_menu(int max_y, int max_x)
 {
 	/* comming soon */
+	menu_t *menu = create_menu(0, 0, max_y, max_x, "start", "end", NULL);
+	mrefresh(menu);
 	getch();
+	del_menu(&menu);
 }
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
 	enum type_win step;
 	win_t *window = NULL;
 	clear();
-	test_menu();
+	test_menu(max_y, max_x);
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
 	for(step = start; step < end; step++)

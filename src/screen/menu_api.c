@@ -8,6 +8,7 @@ typedef struct choices_t {
 	char *name;
 	struct choices_t *next;
 } choices_t;
+
 typedef struct menu_t {
 	ITEM **item;
 	WINDOW *w;
@@ -16,12 +17,23 @@ typedef struct menu_t {
 	int n_choices;
 } menu_t;
 
+void mrefresh(menu_t *menu)
+{
+	post_menu(menu->menu);
+	wrefresh(menu->w);
+}
 static void add_choice(choices_t **choice, char *str)
 {
-	choices_t *tmp = malloc(sizeof(choices_t));
+	choices_t *tmp = malloc(sizeof(choices_t)), *last = *choice;
 	tmp->name = str;
-	tmp->next = *choice;
-	*choice = tmp;
+	tmp->next = NULL;
+	if(last == NULL)
+		*choice = tmp;
+	else {
+		while(last->next != NULL)
+			last = last->next;
+		last->next = tmp;
+	}
 }
 /* end arg NULL */
 static void create_choice(menu_t *menu, va_list args)
@@ -39,8 +51,8 @@ static void create_choice(menu_t *menu, va_list args)
 }
 static void del_choices(choices_t *choice)
 {
-	if(choice->next != NULL)
-		del_choices((choice)->next);
+	if(!choice) return;
+	del_choices((choice)->next);
 	free(choice);
 }
 static choices_t *which_choice(choices_t *choice, int which)
@@ -70,8 +82,7 @@ menu_t *create_menu(int y, int x, int len_y, int len_x, ...)
 	set_menu_win(menu->menu, menu->w);
 	set_menu_sub(menu->menu, derwin(menu->w, len_y, len_x, 0, 0));
 	set_menu_mark(menu->menu, "*");
-	post_menu(menu->menu);
-	wrefresh(menu->w);
+	mrefresh(menu);
 	return menu;
 }
 void del_menu(menu_t **menu)

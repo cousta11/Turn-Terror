@@ -11,7 +11,7 @@
 #include "control.h"
 
 /* dead zone camera */
-int dz_camera(gamer *player)
+static int dz_camera(gamer *player)
 {
 	int step = DZ_SPACE/2, res = 0;
 	if(player->scr_y > (player->dz_y + step)) res = 1;
@@ -25,7 +25,7 @@ int dz_camera(gamer *player)
 	}
 	return 0;
 }
-int interaction(gamer *player, int game_place[SIZE][SIZE])
+static int interaction(gamer *player, int game_place[SIZE][SIZE])
 {
 	int i, j, c;
 	for(i = -1; i <= 1; i++) {
@@ -47,7 +47,7 @@ int interaction(gamer *player, int game_place[SIZE][SIZE])
 	}
 	return 0;
 }
-int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+static int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 {
 	for(;;) {
 		if(start_fight(max_y, max_x, player, game_place))

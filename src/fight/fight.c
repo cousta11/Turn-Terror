@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
+#include <menu.h>
 
 #include "main.h"
 #include "menu_api.h"
@@ -9,35 +10,83 @@
 #include "dungeon.h"
 #include "who_enemy.h"
 
-enum type_win fight_control(gamer *player, struct enemy *enemy)
+enum act {attack, defense, parry, counterattak};
+typedef struct step {
+	enum act player, enemy;
+} step_t;
+
+enum type_win step_logic(step_t *step, gamer *player, struct enemy *enemy)
 {
-	switch(getch()) {
-		case QUIT_K: enemy->hp = 0; break;
-		case DOWN_K: enemy->hp--; return hp_enemy; break;
-		case RIGHT_K: player->hp--; return hp_player; break;
+	int tmp;
+	switch(step->player) {
+		case attack:
+			if(step->enemy == attack) {
+				tmp = player->dmg - enemy->dmg;
+				if(tmp > 0) enemy->hp -= tmp; return hp_enemy;
+				if(tmp < 0)player->hp -= tmp; return hp_player;
+			}
+			break;
+		case defense:
+			if(step->enemy == attack) {
+				tmp = enemy->dmg - player->armor;
+				if(tmp > 0) player->hp -= tmp; return hp_player;
+			}
+			break;
+		case parry: break;
+		case counterattak: break;
 	}
 	return end;
 }
-void test_menu(int max_y, int max_x)
+enum act step_enemy()
 {
-	/* comming soon */
-	menu_t *menu = create_menu(0, 0, max_y, max_x, "start", "end", NULL);
-	mrefresh(menu);
-	getch();
+	return attack;
+}
+enum act step_player(menu_t *menu)
+{
+	int c;
+	ITEM *cur = NULL;
+	while((c = getch()) != QUIT_K) {
+		switch(c) {
+			case DOWN_K:
+				menu_driver(menu_menu(menu), REQ_DOWN_ITEM);
+				break;
+			case UP_K:
+				menu_driver(menu_menu(menu), REQ_UP_ITEM);
+				break;
+			case INTERACTION_K: 
+				cur = current_item(menu_menu(menu));
+				break;
+		}
+		if(cur) break;
+		mrefresh(menu);
+	}
+	return (enum act)item_index(cur);
+}
+enum type_win fight_control(int max_y, int max_x, gamer *player,
+		struct enemy *enemy)
+{
+	enum type_win res = end;
+	menu_t *menu = create_menu(max_y/4, 0, max_y/4, max_x/4,
+			"attack", "defense", "parry", NULL);
+	step_t step;
+	step.enemy = step_enemy();
+	step.player = step_player(menu);
+	res = step_logic(&step, player, enemy);
 	del_menu(&menu);
+	return res;
 }
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
 	enum type_win step;
 	win_t *window = NULL;
 	clear();
-	test_menu(max_y, max_x);
+	refresh();
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
 	for(step = start; step < end; step++)
 		event(max_y, max_x, step, &window, player, enemy);
 	while(player->hp > 0 && enemy->hp > 0) {
-		step = fight_control(player, enemy);
+		step = fight_control(max_y, max_x, player, enemy);
 		event(max_y, max_x, step, &window, player, enemy);
 	}
 	free(enemy);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include <menu_api.h>
+#include "menu_api.h"
 
 typedef struct choices_t {
 	char *name;
@@ -97,4 +97,8 @@ void del_menu(menu_t **menu)
 	delwin((*menu)->w);
 	free(*menu);
 	*menu = NULL;
+}
+void *menu_menu(menu_t *menu)
+{
+	return menu->menu;
 }

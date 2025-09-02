@@ -9,7 +9,9 @@ int healing(int mod, int *hp, int *max_hp)
 {
 	if(*hp == *max_hp)
 		return 0;
-	if(*hp + mod > *max_hp)
+	if(mod + *hp <= 0)
+		*hp = 0;
+	else if(*hp + mod > *max_hp)
 		hp = max_hp;
 	else
 		*hp += mod;

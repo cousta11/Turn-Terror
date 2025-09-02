@@ -44,6 +44,58 @@ int step_enemy(int steps[LEN_STORY_STEP])
 {
 	return ATTACK;
 }
+enum type_win attack(int step[2], gamer *player, struct enemy *enemy)
+{
+	int tmp;
+	switch(step[0]) {
+		case ATTACK:
+			tmp = player->dmg - enemy->dmg;
+			if(tmp > 0) {
+				enemy->hp -= tmp;
+				if(enemy->hp < 0)
+					enemy->hp = 0;
+				return hp_enemy;
+			}
+			if(tmp < 0){
+				player->hp -= tmp;
+				if(player->hp < 0)
+					player->hp = 0;
+				return hp_player;
+			}
+			break;
+		case DEFENSE:
+			tmp = player->dmg - enemy->armor;
+			if(tmp > 0) {
+				enemy->hp -= tmp;
+				if(enemy->hp < 0)
+					enemy->hp = 0;
+				return hp_enemy;
+			}
+			break;
+	}
+	return end;
+}
+enum type_win defense(int step[2], gamer *player, struct enemy *enemy)
+{
+	int tmp;
+	if(step[0] == ATTACK) {
+		tmp = enemy->dmg - player->armor;
+		if(tmp > 0) {
+			player->hp -= tmp;
+			if(player->hp < 0)
+				player->hp = 0;
+			return hp_player;
+		}
+	}
+	return end;
+}
+enum type_win result_step(int step[2], gamer *player, struct enemy *enemy)
+{
+	if(step[0] == PARRY || step[1] == PARRY) return end;
+	if(step[1] == ATTACK) return attack(step, player, enemy);
+	if(step[1] == DEFENSE) return defense(step, player, enemy);
+	return end;
+}
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
 	enum type_win event_type;
@@ -57,6 +109,7 @@ int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 	while(player->hp > 0 && enemy->hp > 0) {
 		step[0] = step_enemy(steps);
 		step[1] = step_player(max_y, max_x);
+		event_type = result_step(step, player, enemy);
 		event(max_y, max_x, event_type, &window, player, enemy);
 	}
 	free(enemy);

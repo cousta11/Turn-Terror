@@ -42,9 +42,6 @@ void free_display(win_t *window)
 		free_display(win_next(window));
 	switch(win_type(window)) {
 		case start: break;
-		case place: break;
-		case menu: break;
-		case panel: del_panel(win_interface(window)); break;
 		case hp_player: del_panel(win_interface(window)); break;
 		case hp_enemy: del_panel(win_interface(window)); break;
 		case end: break;

@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "menu_api.h"
 #include "fight.h"
 #include "screen.h"
 
@@ -47,9 +46,6 @@ void event(int max_y, int max_x, enum type_win w, win_t **window, gamer *player,
 {
 	switch(w) {
 		case start: break;
-		case panel: break;
-		case place: break;
-		case menu: break;
 		case hp_player:
 			event_hp(max_y - 1 , w, player->hp, player->max_hp, max_x, 4, window);
 			break;

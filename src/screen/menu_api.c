@@ -79,10 +79,10 @@ menu_t *create_menu(int y, int x, int len_y, int len_x, ...)
 	create_item(menu);
 	menu->menu = new_menu(menu->item);
 	menu->w = newwin(len_y, len_x, y, x);
+	box(menu->w, 0, 0);
 	set_menu_win(menu->menu, menu->w);
-	set_menu_sub(menu->menu, derwin(menu->w, len_y, len_x, 0, 0));
-	set_menu_mark(menu->menu, "*");
-	mrefresh(menu);
+	set_menu_sub(menu->menu, derwin(menu->w, len_y - 2, len_x - 2, 1, 1));
+	set_menu_mark(menu->menu, "> ");
 	return menu;
 }
 void del_menu(menu_t **menu)
@@ -101,4 +101,8 @@ void del_menu(menu_t **menu)
 void *menu_menu(menu_t *menu)
 {
 	return menu->menu;
+}
+void *menu_w(menu_t *menu)
+{
+	return menu->w;
 }

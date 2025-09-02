@@ -16,9 +16,9 @@ struct enemy *who_enemy(char c)
 {
 	struct enemy *enemy = NULL;
 	switch(c) {
-		case 'T': enemy = create_enemy(15, 3, 2, "Troll"); break;
-		case 'O': enemy = create_enemy(8, 3, 2, "Orc"); break;
-		case 'G': enemy = create_enemy(5, 3, 2, "Goblin"); break;
+		case 'T': enemy = create_enemy(15, 2, 2, "Troll"); break;
+		case 'O': enemy = create_enemy(8, 1, 1, "Orc"); break;
+		case 'G': enemy = create_enemy(5, 1, 0, "Goblin"); break;
 	}
 	return enemy;
 }

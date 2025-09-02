@@ -10,42 +10,20 @@
 #include "dungeon.h"
 #include "who_enemy.h"
 
-enum act {attack, defense, parry, counterattak};
-typedef struct step {
-	enum act player, enemy;
-} step_t;
+#define LEN_STORY_STEP 3
+#define ZERO -1
+#define ATTACK 0
+#define DEFENSE 1
+#define PARRY 2
+#define AMOUNT_ACT 3
 
-enum type_win step_logic(step_t *step, gamer *player, struct enemy *enemy)
-{
-	int tmp;
-	switch(step->player) {
-		case attack:
-			if(step->enemy == attack) {
-				tmp = player->dmg - enemy->dmg;
-				if(tmp > 0) enemy->hp -= tmp; return hp_enemy;
-				if(tmp < 0)player->hp -= tmp; return hp_player;
-			}
-			break;
-		case defense:
-			if(step->enemy == attack) {
-				tmp = enemy->dmg - player->armor;
-				if(tmp > 0) player->hp -= tmp; return hp_player;
-			}
-			break;
-		case parry: break;
-		case counterattak: break;
-	}
-	return end;
-}
-enum act step_enemy()
-{
-	return attack;
-}
-enum act step_player(menu_t *menu)
+int step_player(int max_y, int max_x)
 {
 	int c;
-	ITEM *cur = NULL;
-	while((c = getch()) != QUIT_K) {
+	menu_t *menu = create_menu((max_y/2 - AMOUNT_ACT/2), 0, 5, max_x/3,
+			"Attack", "Defense", "Parry", NULL);
+	mrefresh(menu);
+	while((c = getch()) != EOF) {
 		switch(c) {
 			case DOWN_K:
 				menu_driver(menu_menu(menu), REQ_DOWN_ITEM);
@@ -53,41 +31,33 @@ enum act step_player(menu_t *menu)
 			case UP_K:
 				menu_driver(menu_menu(menu), REQ_UP_ITEM);
 				break;
-			case INTERACTION_K: 
-				cur = current_item(menu_menu(menu));
+			case INTERACTION_K:
+				return item_index(current_item(menu_menu(menu)));
 				break;
 		}
-		if(cur) break;
 		mrefresh(menu);
 	}
-	return (enum act)item_index(cur);
-}
-enum type_win fight_control(int max_y, int max_x, gamer *player,
-		struct enemy *enemy)
-{
-	enum type_win res = end;
-	menu_t *menu = create_menu(max_y/4, 0, max_y/4, max_x/4,
-			"attack", "defense", "parry", NULL);
-	step_t step;
-	step.enemy = step_enemy();
-	step.player = step_player(menu);
-	res = step_logic(&step, player, enemy);
 	del_menu(&menu);
-	return res;
+	return PARRY;
+}
+int step_enemy(int steps[LEN_STORY_STEP])
+{
+	return ATTACK;
 }
 int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
-	enum type_win step;
+	enum type_win event_type;
 	win_t *window = NULL;
+	int steps[LEN_STORY_STEP] = {ZERO, ZERO, ZERO}, step[2] = {ZERO, ZERO};
 	clear();
-	refresh();
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
-	for(step = start; step < end; step++)
-		event(max_y, max_x, step, &window, player, enemy);
+	for(event_type = start; event_type < end; event_type++)
+		event(max_y, max_x, event_type, &window, player, enemy);
 	while(player->hp > 0 && enemy->hp > 0) {
-		step = fight_control(max_y, max_x, player, enemy);
-		event(max_y, max_x, step, &window, player, enemy);
+		step[0] = step_enemy(steps);
+		step[1] = step_player(max_y, max_x);
+		event(max_y, max_x, event_type, &window, player, enemy);
 	}
 	free(enemy);
 	free_display(window);

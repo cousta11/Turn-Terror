@@ -21,6 +21,6 @@ struct gamer {
 	int dmg, armor;
 };
 typedef struct gamer gamer;
-enum type_win {start = 0, panel, menu, place, hp_player, hp_enemy, end};
+enum type_win {start = 0, /*panel,*/ hp_player, hp_enemy, end};
 
 #endif

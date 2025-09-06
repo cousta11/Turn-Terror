@@ -7,14 +7,19 @@
 
 int healing(int mod, int *hp, int *max_hp)
 {
-	if(*hp == *max_hp)
-		return 0;
-	if(mod + *hp <= 0)
-		*hp = 0;
-	else if(*hp + mod > *max_hp)
-		hp = max_hp;
-	else
-		*hp += mod;
+	if(mod > 0) {
+		if(*hp == *max_hp)
+			return 0;
+		else if(*hp + mod > *max_hp)
+			*hp = *max_hp;
+		else
+			*hp += mod;
+	} else if(mod < 0) {
+		if(*hp + mod <= 0)
+			*hp = 0;
+		else
+		 *hp += mod;
+	}
 	return 1;
 }
 char *hp_str(char str[], int str_len, int hp, int max_hp)

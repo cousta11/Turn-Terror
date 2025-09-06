@@ -4,8 +4,17 @@
 #include <stdlib.h>
 
 #include "main.h"
+#include "fight.h"
+#include "fight_event.h"
 #include "screen.h"
 
+void refresh_fight(int max_y, int max_x, win_t *window, gamer *player,
+		struct enemy *enemy)
+{
+	enum type_win event_type;
+	for(event_type = start; event_type < end; event_type++)
+		event(max_y, max_x, event_type, &window, player, enemy);
+}
 win_t *display(enum type_win type, win_t *window)
 {
 	win_t *tmp = window;

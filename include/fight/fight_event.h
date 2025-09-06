@@ -7,5 +7,6 @@
 int healing(int mod, int *hp, int *max_hp);
 void event(int max_y, int max_x, enum type_win w, win_t **window, gamer *player,
 		struct enemy *enemy);
+enum type_win step(int max_y, int max_x, gamer *player, struct enemy *enemy);
 
 #endif

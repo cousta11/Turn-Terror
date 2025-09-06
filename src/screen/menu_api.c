@@ -15,6 +15,7 @@ typedef struct menu_t {
 	MENU *menu;
 	choices_t *choice;
 	int n_choices;
+	int y, x, len_y, len_x;
 } menu_t;
 
 void mrefresh(menu_t *menu)
@@ -73,22 +74,28 @@ menu_t *create_menu(int y, int x, int len_y, int len_x, ...)
 {
 	menu_t *menu = malloc(sizeof(menu_t));
 	va_list args;
+	menu->y = y;
+	menu->x = x;
+	menu->len_y = len_y;
+	menu->len_x = len_x;
 	va_start(args, len_x);
 	create_choice(menu, args);
 	va_end(args);
 	create_item(menu);
 	menu->menu = new_menu(menu->item);
 	menu->w = newwin(len_y, len_x, y, x);
-	box(menu->w, 0, 0);
 	set_menu_win(menu->menu, menu->w);
 	set_menu_sub(menu->menu, derwin(menu->w, len_y - 2, len_x - 2, 1, 1));
 	set_menu_mark(menu->menu, "> ");
+	box(menu->w, 0, 0);
 	return menu;
 }
 void del_menu(menu_t **menu)
 {
 	int i;
 	unpost_menu((*menu)->menu);
+	werase((*menu)->w);
+	wrefresh((*menu)->w);
 	free_menu((*menu)->menu);
 	del_choices((*menu)->choice);
 	for(i = 0; i < (*menu)->n_choices; i++)

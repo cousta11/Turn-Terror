@@ -1,10 +1,12 @@
 #include <ncurses.h>
 
 #include "control.h"
+#include "save.h"
 #include "dungeon.h"
 #include "screen.h"
 
-int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+int move_gamer(int max_y, int max_x, char *file, gamer *player,
+		int game_place[SIZE][SIZE])
 {
 	switch(getch()) {
 		case QUIT_K:
@@ -27,6 +29,12 @@ int move_gamer(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 			break;
 		case RIGHT_K:
 			mvplayer(0, 1, player, game_place);
+			break;
+		case LOAD_SAVE_K:
+			save_read(file, player, game_place);
+			break;
+		case SAVE_K:
+			save_write(file, player, game_place);
 			break;
 	}
 	return 0;

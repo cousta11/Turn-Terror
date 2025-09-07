@@ -55,7 +55,7 @@ static int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 				return 0;
 		if(dz_camera(player))
 			scr_replay(max_y, max_x, player, game_place);
-		switch(move_gamer(max_y, max_x, player, game_place)) {
+		switch(move_gamer(max_y, max_x, "test.save", player, game_place)) {
 			case 0: break;
 			case 1: return 0; break;
 			case 2:

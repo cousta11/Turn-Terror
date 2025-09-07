@@ -16,6 +16,7 @@ int init_screen(int *max_y, int *max_x, int work_bw) {
 		init_pair(2, COLOR_RED, COLOR_BLACK);
 		init_pair(3, COLOR_MAGENTA, COLOR_BLACK);
 		init_pair(4, COLOR_GREEN, COLOR_BLACK);
+		init_pair(5, COLOR_YELLOW, COLOR_BLACK);
 		attrset(COLOR_PAIR(1));
 	}
 	cbreak();

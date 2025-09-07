@@ -22,7 +22,7 @@ int healing(int mod, int *hp, int *max_hp)
 	}
 	return 1;
 }
-char *hp_str(char str[], int str_len, int hp, int max_hp)
+char *hp_str(char str[], int str_len, int hp, int max_hp, enum type_win w)
 {
 	char buf[32];
 	int i, buf_len = sizeof(buf);
@@ -34,7 +34,10 @@ char *hp_str(char str[], int str_len, int hp, int max_hp)
 		str[i] = '=';
 	for(i = mhp; i < str_len - 1 || i > str_len - 1; i++)
 		str[i] = ' ';
-	snprintf(buf, buf_len, "] HP: %d/%d [", hp, max_hp);
+	if(w == sp_player)
+		snprintf(buf, buf_len, "] SP: %d/%d [", hp, max_hp);
+	else
+		snprintf(buf, buf_len, "] HP: %d/%d [", hp, max_hp);
 	buf_len = strlen(buf);
 	for(i = 0; i < buf_len; i++)
 		str[str_len/2 - buf_len/2 + i] = buf[i];
@@ -44,7 +47,7 @@ void event_hp(int y, enum type_win w, int hp, int max_hp, int str_len, int col,
 		win_t **window)
 {
 	char *str = malloc(str_len);
-	hp_str(str, str_len, hp, max_hp);
+	hp_str(str, str_len, hp, max_hp, w);
 	hp_display(y, 1, strlen(str), str, col, w, window);
 	free(str);
 }
@@ -53,6 +56,9 @@ void event(int max_y, int max_x, enum type_win w, win_t **window, gamer *player,
 {
 	switch(w) {
 		case start: break;
+		case sp_player:
+			event_hp(max_y - 2 , w, player->sp, player->max_sp, max_x, 5, window);
+			break;
 		case hp_player:
 			event_hp(max_y - 1 , w, player->hp, player->max_hp, max_x, 4, window);
 			break;

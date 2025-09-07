@@ -20,6 +20,7 @@ int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 	refresh_fight(max_y, max_x, window, player, enemy);
 	while(player->hp > 0 && enemy->hp > 0) {
 		event_type = step(max_y, max_x, player, enemy);
+		event(max_y, max_x, sp_player, &window, player, enemy);
 		event(max_y, max_x, event_type, &window, player, enemy);
 	}
 	free(enemy);

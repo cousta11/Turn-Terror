@@ -74,27 +74,46 @@ int hit_bar(int max_y, int max_x)
 	len_ch(y, x - 1, len_x + 3, ' ', 1);
 	return (current_pos >= hit_x && current_pos <= hit_x + hit_len);
 }
+int attack(int res, gamer *player, struct enemy *enemy)
+{
+	if(!res) return end;
+	healing(player->dmg * -1, &(enemy->hp), &(enemy->max_hp));
+	return hp_enemy;
+}
+int defense(int res, gamer *player, struct enemy *enemy)
+{
+	if(res) return end;
+	healing(enemy->dmg * -1, &(player->hp), &(player->max_hp));
+	return hp_player;
+}
+int parry(int res, gamer *player, struct enemy *enemy)
+{
+	if(res) return end;
+	healing(enemy->dmg * -1, &(player->hp), &(player->max_hp));
+	return end;
+}
 enum type_win step(int max_y, int max_x, gamer *player, struct enemy *enemy)
 {
-	int act, res;
-	act = step_player(max_y, max_x);
+	int act, res, i = 1;
+	while(i) {
+		act = step_player(max_y, max_x);
+		switch(act) {
+			case ATTACK:
+				if(!(player->sp - 5 + player->mod_sp >= 0)) break;
+				healing(-5, &(player->sp), &(player->max_sp));
+				i = 0; player->mod_sp = 0;
+				break;
+			default:
+				if(act == DEFENSE) healing(1, &(player->sp), &(player->max_sp));
+				if(act == PARRY) player->mod_sp = 1;
+				i = 0;
+		}
+	}
 	res = hit_bar(max_y, max_x);
 	switch(act) {
-		case ATTACK:
-			if(res) {
-				/*enemy->hp -= player->dmg;*/
-				healing(player->dmg * -1, &(enemy->hp), &(enemy->max_hp));
-				return hp_enemy;
-			}
-			break;
-		case DEFENSE:
-		case PARRY:
-			if(!res) {
-				/*player->hp -= enemy->dmg;*/
-				healing(enemy->dmg * -1, &(player->hp), &(player->max_hp));
-				return hp_player;
-			}
-			break;
+		case ATTACK: return attack(res, player, enemy); break;
+		case DEFENSE: return defense(res, player, enemy); break;
+		case PARRY: return parry(res, player, enemy); break;
 	}
 	return end;
 }

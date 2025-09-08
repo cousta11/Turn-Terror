@@ -10,6 +10,8 @@
 #include "fight_event.h"
 #include "control.h"
 
+#define DZ_SPACE 5
+
 /* dead zone camera */
 static int dz_camera(gamer *player)
 {
@@ -25,12 +27,12 @@ static int dz_camera(gamer *player)
 	}
 	return 0;
 }
-static int interaction(gamer *player, int game_place[SIZE][SIZE])
+static int interaction(gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, c;
 	for(i = -1; i <= 1; i++) {
 		for(j = -1; j <= 1; j++) {
-			if(out_the_barrier(player->y + i, player->x + j))
+			if(is_out_of_bounds(player->y + i, player->x + j))
 				continue;
 			c = game_place[player->y + i][player->x + j];
 			switch(c) {
@@ -47,7 +49,7 @@ static int interaction(gamer *player, int game_place[SIZE][SIZE])
 	}
 	return 0;
 }
-static int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+static int game(int max_y, int max_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	for(;;) {
 		if(start_fight(max_y, max_x, player, game_place))
@@ -70,7 +72,7 @@ static int game(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
 int main(int argc, char *argv[])
 {
 	int max_y, max_x, work_bw = 0, res, i;
-	int (*game_place)[SIZE] = malloc(SIZE * sizeof(*game_place));
+	int (*game_place)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*game_place));
 	gamer *player = malloc(sizeof(gamer));
 	if(game_place == NULL) {
 		perror("Error memory");
@@ -89,7 +91,7 @@ int main(int argc, char *argv[])
 		free(game_place);
 		return 1;
 	}
-	preparing_the_dungeon(max_y, max_x, player, game_place);
+	new_game(max_y, max_x, player, game_place);
 
 	res = game(max_y, max_x, player, game_place);	
 

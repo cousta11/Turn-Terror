@@ -2,17 +2,12 @@
 #define SUP_FUNC_H
 
 #define CHAR '@'
-#define SIZE 1000
+#define MAP_SIZE 1000
 #define WALL '#'
 #define SPACE ' '
 #define FORESTER '^'
 #define ENEMIES {'T', 'G', 'O'}
 #define OBJECT {'H'}
-#define DZ_SPACE 5
-#define START_MAX_HP 5
-#define START_MAX_SP 5
-#define BASE_DMG 3
-#define BASE_ARMOR 2
 
 struct gamer {
 	int y, x;

@@ -6,7 +6,7 @@
 #include "screen.h"
 
 int move_gamer(int max_y, int max_x, char *file, gamer *player,
-		int game_place[SIZE][SIZE])
+		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	switch(getch()) {
 		case QUIT_K:
@@ -16,7 +16,7 @@ int move_gamer(int max_y, int max_x, char *file, gamer *player,
 			return 2;
 			break;
 		case REST_K:
-			preparing_the_dungeon(max_y, max_x, player, game_place);
+			new_game(max_y, max_x, player, game_place);
 			break;
 		case LEFT_K:
 			mvplayer(0, -1, player, game_place);

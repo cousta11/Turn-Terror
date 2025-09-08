@@ -3,8 +3,8 @@
 #include "dungeon.h"
 
 int init_screen(int *max_y, int *max_x, int work_bw) {
-    initscr();
-    getmaxyx(stdscr, *max_y, *max_x);
+	initscr();
+	getmaxyx(stdscr, *max_y, *max_x);
 	if(*max_y < 24 || *max_x < 80) {
 		endwin();
 		fprintf(stderr, "Error: terminal must be >= 24x80\n");
@@ -20,11 +20,11 @@ int init_screen(int *max_y, int *max_x, int work_bw) {
 		attrset(COLOR_PAIR(1));
 	}
 	cbreak();
-    noecho();
-    curs_set(0);
+	noecho();
+	curs_set(0);
 	return 0;
 }
-int end_screen(gamer *player, int game_place[SIZE][SIZE], int col, char *str) {
+int end_screen(gamer *player, int game_place[MAP_SIZE][MAP_SIZE], int col, char *str) {
 	int max_y, max_x;
 	char buf[] = "quit[q] restart[r/any]\n";
 	getmaxyx(stdscr, max_y, max_x);
@@ -34,27 +34,27 @@ int end_screen(gamer *player, int game_place[SIZE][SIZE], int col, char *str) {
 	mvaddstr(max_y/2 + 1, max_x/2 - sizeof(buf)/2, buf);
 	if(getch() == 'q')
 		return 1;
-	preparing_the_dungeon(max_y, max_x, player, game_place);
+	new_game(max_y, max_x, player, game_place);
 	return 0;
 }
-int lose_screen(gamer *player, int game_place[SIZE][SIZE])
+int lose_screen(gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	if(end_screen(player, game_place, 2, "You lose!\n"))
 		return 1;
 	return 0;
 }
-int winner_screen(gamer *player, int game_place[SIZE][SIZE])
+int winner_screen(gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	if(end_screen(player, game_place, 4, "You winner!\n"))
 		return 1;
 	return 0;
 }
-void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[SIZE][SIZE])
+void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int y = player->y + mod_y;
 	int x = player->x + mod_x;
-    if(out_the_barrier(y, x) || game_place[y][x] == WALL)
-        return;
+	if(is_out_of_bounds(y, x) || game_place[y][x] == WALL)
+	    return;
 	attrset(COLOR_PAIR(1));
 	mvaddch(player->scr_y, player->scr_x, game_place[player->y][player->x]);
 	player->y += mod_y;
@@ -69,7 +69,7 @@ void atmvaddch(int y, int x, int c, int cl_pair)
 	attrset(COLOR_PAIR(cl_pair));
 	mvaddch(y, x, c);
 }
-void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE])
+void map_replay(int y, int x, int max_y, int max_x, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j;
 	for(i = 0; i < max_y; i++) {
@@ -86,21 +86,21 @@ void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE])
 		}
 	}
 }
-void scr_replay(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE])
+void scr_replay(int max_y, int max_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int y = player->y - (max_y/2);
 	int x = player->x - (max_x/2);
 	if (y < 0) y = 0;
-    if (x < 0) x = 0;
-    if (y + max_y >= SIZE) y = SIZE - max_y;
-    if (x + max_x >= SIZE) x = SIZE - max_x;
+	if (x < 0) x = 0;
+	if (y + max_y >= MAP_SIZE) y = MAP_SIZE - max_y;
+	if (x + max_x >= MAP_SIZE) x = MAP_SIZE - max_x;
 	clear();
 	map_replay(y, x, max_y, max_x, game_place);
 	attrset(COLOR_PAIR(1));
-    player->scr_y = player->y - y;
-    player->scr_x = player->x - x;
-    if (player->scr_y >= 0 && player->scr_y < max_y &&
-        player->scr_x >= 0 && player->scr_x < max_x) {
-        mvaddch(player->scr_y, player->scr_x, CHAR);
-    }
+	player->scr_y = player->y - y;
+	player->scr_x = player->x - x;
+	if (player->scr_y >= 0 && player->scr_y < max_y &&
+	    player->scr_x >= 0 && player->scr_x < max_x) {
+	    mvaddch(player->scr_y, player->scr_x, CHAR);
+	}
 }

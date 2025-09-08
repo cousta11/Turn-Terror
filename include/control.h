@@ -13,6 +13,6 @@
 
 #include "../include/main.h"
 int move_gamer(int max_y, int max_x, char *file, gamer *player,
-		int game_place[SIZE][SIZE]);
+		int game_place[MAP_SIZE][MAP_SIZE]);
 
 #endif

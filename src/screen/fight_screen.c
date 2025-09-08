@@ -40,8 +40,8 @@ void hp_display(int win_y, int len_y, int len_x, char *str,
 		win_set_interface(tmp, new_panel(win_window(tmp)));
 		win_set_next(tmp, *window);
 		*window = tmp;
-    	update_panels();
-    	doupdate();
+		update_panels();
+		doupdate();
 	}
 	wrefresh(win_window(tmp));
 }

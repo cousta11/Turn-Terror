@@ -7,7 +7,7 @@
 #include "fight_event.h"
 #include "control.h"
 #include "menu_api.h"
-#include "rand_to.h"
+#include "random_range.h"
 
 #define LEN_STORY_STEP 3
 #define ZERO -1
@@ -57,7 +57,7 @@ void create_hb(int y, int x, int len_x, int hit_x, int hit_len)
 int hit_bar(int max_y, int max_x)
 {
 	int y = max_y/2, x = max_x/4, len_x = max_x/2, current_pos = x;
-	int hit_x = rand_to(x, len_x), hit_len = len_x/5;
+	int hit_x = random_range(x, len_x), hit_len = len_x/5;
 	create_hb(y, x, len_x, hit_x, hit_len);
 	nodelay(stdscr, TRUE);
 	while(current_pos <= x + len_x) {

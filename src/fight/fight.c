@@ -31,14 +31,14 @@ int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 }
 
 int start_fight(int max_y, int max_x, gamer *player,
-		int game_place[SIZE][SIZE])
+		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, k;
 	int enemy[] = ENEMIES, s_enemy = sizeof(enemy)/sizeof(int);
 	for(i = -2; i <= 2; i++) {
 		for(j = -2; j <= 2; j++) {
 			for(k = 0; k < s_enemy; k++) {
-				if(out_the_barrier(player->y + i, player->x + j))
+				if(is_out_of_bounds(player->y + i, player->x + j))
 					continue;
 				if(game_place[player->y + i][player->x + j] == enemy[k]) {
 					game_place[player->y +i][player->x + j] = SPACE;

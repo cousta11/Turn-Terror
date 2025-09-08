@@ -9,12 +9,12 @@ void hp_display(int win_y, int len_y, int len_x, char *str,
 		int color, enum type_win type, win_t **window);
 void free_display(win_t *window);
 int init_screen(int *max_y, int *max_x, int work_bw);
-void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[SIZE][SIZE]);
+void mvplayer(int mod_y, int mod_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE]);
 void atmvaddch(int y, int x, int c, int cl_pair);
-void map_replay(int y, int x, int max_y, int max_x, int game_place[SIZE][SIZE]);
-void scr_replay(int max_y, int max_x, gamer *player, int game_place[SIZE][SIZE]);
-int winner_screen(gamer *player, int game_place[SIZE][SIZE]);
-int lose_screen(gamer *player, int game_place[SIZE][SIZE]);
+void map_replay(int y, int x, int max_y, int max_x, int game_place[MAP_SIZE][MAP_SIZE]);
+void scr_replay(int max_y, int max_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE]);
+int winner_screen(gamer *player, int game_place[MAP_SIZE][MAP_SIZE]);
+int lose_screen(gamer *player, int game_place[MAP_SIZE][MAP_SIZE]);
 win_t *display(enum type_win type, win_t *window);
 
 /* win_t functions */

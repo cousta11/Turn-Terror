@@ -1,8 +1,8 @@
 #include <stdlib.h>
 
-#include "rand_to.h"
+#include "random_range.h"
 
-int rand_to(int min, int max)
+int random_range(int min, int max)
 {
 	return min + rand()%(max - min + 1);
 }

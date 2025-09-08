@@ -2,9 +2,8 @@
 #define DUNGEON_H
 
 #include "main.h"
-void dungeon_generated(int *start_y, int *start_x, int game_place[SIZE][SIZE]);
-int out_the_barrier(int y, int x);
-void preparing_the_dungeon(int max_y, int max_x,gamer *player, 
-		int game_place[SIZE][SIZE]);
+int is_out_of_bounds(const int y, const int x);
+void new_game(const int max_y, const int max_x, gamer *player,
+		int game_place[MAP_SIZE][MAP_SIZE]);
 
 #endif

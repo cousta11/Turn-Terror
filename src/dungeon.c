@@ -8,7 +8,9 @@
 #define START_MOD_SP 5
 #define BASE_DMG 3
 #define BASE_ARMOR 2
-#define RANGE_DURNCARD 50 * MAP_SIZE
+#define RANGE_DRUNKARD 50 * MAP_SIZE
+#define CHANCE_SPAWN_ENEMY 20    /* 2% chance spawn enemy (from 1000) */
+#define CHANCE_SPAWN_OBJECT 3    /* 0.3% chance spawn object (from 1000) */
 
 static void direction(int *y, int *x)
 {
@@ -38,9 +40,9 @@ static void drunkard(int y, int x, const int steps,
 		direction(&y, &x);
 		if(game_place[y][x] == WALL) {
 			random_number = random_range(1, 1000);
-			if(random_number < 20)
+			if(random_number < CHANCE_SPAWN_ENEMY)
 				game_place[y][x] = enemy[random_range(0, sizeof(enemy)/sizeof(int) - 1)];
-			else if(random_number <= 23)
+			else if(random_number < CHANCE_SPAWN_ENEMY + CHANCE_SPAWN_OBJECT)
 				game_place[y][x] = obj[random_range(0, sizeof(obj)/sizeof(int)- 1)];
 			else
 				game_place[y][x] = SPACE;
@@ -61,7 +63,7 @@ static void dungeon_generated(int *start_y, int *start_x,
 		for(j = 0; j < MAP_SIZE; j++)
 			game_place[i][j] = WALL;
 
-	drunkard(y, x, 50 * MAP_SIZE, game_place);
+	drunkard(y, x, RANGE_DRUNKARD, game_place);
 
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)

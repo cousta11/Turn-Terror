@@ -1,7 +1,7 @@
-#include "main.h"
+#include "core.h"
 #include "dungeon.h"
 #include "screen.h"
-#include "random_range.h"
+#include "random.h"
 
 #define START_MAX_HP 5
 #define START_MAX_SP 5

@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "main.h"
-#include "fight_screen.h"
-#include "fight_step.h"
-#include "fight.h"
-#include "fight_event.h"
+#include "core.h"
+#include "combat_ui.h"
+#include "combat_step.h"
+#include "combat.h"
+#include "combat_event.h"
 #include "dungeon.h"
 #include "who_enemy.h"
 

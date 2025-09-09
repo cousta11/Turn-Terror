@@ -9,7 +9,8 @@
 #define REST_K 'r'
 #define INTERACTION_K 'i'
 
-#include "main.h"
+#include "core.h"
+#include "player.h"
 
 int control(player_t *player, int game_place[MAP_SIZE][MAP_SIZE]);
 

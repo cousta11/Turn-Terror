@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef CORE_H
+#define CORE_H
 
 #define MAP_SIZE 1000
 

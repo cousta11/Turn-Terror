@@ -3,9 +3,9 @@
 #include <menu.h>
 #include <stdlib.h>
 
-#include "fight.h"
-#include "fight_screen.h"
-#include "fight_event.h"
+#include "combat.h"
+#include "combat_ui.h"
+#include "combat_event.h"
 #include "win_t.h"
 
 void refresh_fight(const int max_y, const int max_x, win_t *window,

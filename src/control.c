@@ -1,5 +1,7 @@
 #include <ncurses.h>
 
+#include "player.h"
+#include "core.h"
 #include "control.h"
 #include "screen.h"
 

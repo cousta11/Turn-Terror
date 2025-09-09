@@ -3,12 +3,12 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "main.h"
-#include "player_t.h"
+#include "core.h"
+#include "player.h"
 #include "dungeon.h"
 #include "screen.h"
-#include "fight.h"
-#include "fight_event.h"
+#include "combat.h"
+#include "combat_event.h"
 #include "control.h"
 
 static int interaction(const int max_y, const int max_x, player_t *player,
@@ -61,23 +61,28 @@ int main(int argc, char *argv[])
 	int max_y, max_x, work_bw = 0, res, i;
 	int (*game_place)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*game_place));
 	player_t *player = malloc(sizeof(player_t));
+
 	if(game_place == NULL) {
 		perror("Error memory");
 		free(player);
 		return 1;
 	}
+
 	srand(time(NULL));
+
 	for(i = 1; i <= argc - 1; i++) {
 		if(strcmp(argv[i], "-bw") == 0)
 			work_bw = 1;
 		else
 			work_bw = has_colors();
 	}
+
 	if(init_screen(&max_y, &max_x, work_bw)) {
 		free(player);
 		free(game_place);
 		return 1;
 	}
+
 	new_game(max_y, max_x, player, game_place);
 
 	res = game(max_y, max_x, player, game_place);	

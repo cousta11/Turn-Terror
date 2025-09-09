@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "random_range.h"
+#include "random.h"
 
 int random_range(const int min, const int max)
 {

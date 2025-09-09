@@ -1,8 +1,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "player_t.h"
-#include "main.h"
+#include "player.h"
+#include "core.h"
 
 int init_screen(int *max_y, int *max_x, int work_bw);
 void scr_replay(const int max_y, const int max_x, player_t *player,

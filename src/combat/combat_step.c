@@ -2,10 +2,10 @@
 #include <menu.h>
 #include <stdlib.h>
 
-#include "fight_event.h"
+#include "combat_event.h"
 #include "control.h"
 #include "menu_api.h"
-#include "random_range.h"
+#include "random.h"
 
 #define LEN_STORY_STEP 3
 #define ZERO -1

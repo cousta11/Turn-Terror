@@ -2,21 +2,30 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "fight_screen.h"
+#include "combat_ui.h"
 
 int change_of_state(const int modifier, int *current, int *maximum)
 {
-	if(modifier == 0)
-	    return 0;
+    if(modifier == 0)
+        return 0;
 
-	if(modifier > 0) {
-	    if(*current >= *maximum)
-	    *current = (*current + modifier > *maximum) ? *maximum : *current + modifier;
-	} else {
-	    *current = (*current + modifier <= 0) ? 0 : *current + modifier;
-	}
-	
-	return 1;
+    if(modifier > 0) {
+        if(*current >= *maximum)
+            return 0;
+        
+        if(*current + modifier > *maximum)
+            *current = *maximum;
+        else
+            *current += modifier;
+
+    } else {
+        if(*current + modifier <= 0)
+            *current = 0;
+        else 
+            *current += modifier;
+    }
+    
+    return 1;
 }
 static void create_bar_visual(char *buffer, int bar_width, int filled_width)
 {

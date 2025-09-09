@@ -2,8 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "fight.h"
-#include "screen.h"
+#include "fight_screen.h"
 
 int healing(int mod, int *hp, int *max_hp)
 {
@@ -51,8 +50,8 @@ void event_hp(int y, enum type_win w, int hp, int max_hp, int str_len, int col,
 	hp_display(y, 1, strlen(str), str, col, w, window);
 	free(str);
 }
-void event(int max_y, int max_x, enum type_win w, win_t **window, gamer *player,
-		struct enemy *enemy)
+void event(int max_y, int max_x, enum type_win w, win_t **window, player_t *player,
+		enemy_t *enemy)
 {
 	switch(w) {
 		case start: break;

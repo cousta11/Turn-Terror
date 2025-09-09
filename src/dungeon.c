@@ -70,7 +70,7 @@ static void dungeon_generated(int *start_y, int *start_x,
 			if(game_place[y + i][x + j] != FORESTER)
 				game_place[y + i][x + j] = SPACE;
 }
-static void new_player(gamer *player)
+static void new_player(player_t *player)
 {
 	player->dz_y = player->scr_y;
 	player->dz_x = player->scr_x;
@@ -85,7 +85,7 @@ int is_out_of_bounds(const int y, const int x)
 {
 	return y >= MAP_SIZE || y < 0 || x >= MAP_SIZE || x < 0;
 }
-void new_game(const int max_y, const int max_x, gamer *player,
+void new_game(const int max_y, const int max_x, player_t *player,
 		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	dungeon_generated(&player->y, &player->x, game_place);

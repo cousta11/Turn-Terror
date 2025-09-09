@@ -1,6 +1,6 @@
-#ifndef RAND_TO_H
-#define RAND_TO_H
+#ifndef RANDOM_RANGE
+#define RANDOM_RANGE
 
-int random_range(int min, int max);
+int random_range(const int min, const int max);
 
 #endif

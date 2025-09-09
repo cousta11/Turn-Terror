@@ -4,20 +4,6 @@
 
 #include "menu_api.h"
 
-typedef struct choices_t {
-	char *name;
-	struct choices_t *next;
-} choices_t;
-
-typedef struct menu_t {
-	ITEM **item;
-	WINDOW *w;
-	MENU *menu;
-	choices_t *choice;
-	int n_choices;
-	int y, x, len_y, len_x;
-} menu_t;
-
 void mrefresh(menu_t *menu)
 {
 	post_menu(menu->menu);
@@ -104,12 +90,4 @@ void del_menu(menu_t **menu)
 	delwin((*menu)->w);
 	free(*menu);
 	*menu = NULL;
-}
-void *menu_menu(menu_t *menu)
-{
-	return menu->menu;
-}
-void *menu_w(menu_t *menu)
-{
-	return menu->w;
 }

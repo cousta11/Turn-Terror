@@ -3,14 +3,15 @@
 #include <string.h>
 
 #include "main.h"
+#include "fight_screen.h"
 #include "screen.h"
 #include "fight.h"
 #include "fight_event.h"
 #include "dungeon.h"
 #include "who_enemy.h"
 
-
-int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
+static int fight(const int max_y, const int max_x, player_t *player,
+		enemy_t *enemy)
 {
 	enum type_win event_type;
 	win_t *window = NULL;
@@ -30,11 +31,12 @@ int fight(int max_y, int max_x, gamer *player, struct enemy *enemy)
 	return 0;
 }
 
-int start_fight(int max_y, int max_x, gamer *player,
+int start_fight(const int max_y, const int max_x, player_t *player,
 		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, k;
 	int enemy[] = ENEMIES, s_enemy = sizeof(enemy)/sizeof(int);
+
 	for(i = -2; i <= 2; i++) {
 		for(j = -2; j <= 2; j++) {
 			for(k = 0; k < s_enemy; k++) {
@@ -48,6 +50,7 @@ int start_fight(int max_y, int max_x, gamer *player,
 			}
 		}
 	}
+
 	scr_replay(max_y, max_x, player, game_place);
 	return 0;
 }

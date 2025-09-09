@@ -2,8 +2,6 @@
 #include <menu.h>
 #include <stdlib.h>
 
-#include "main.h"
-#include "fight.h"
 #include "fight_event.h"
 #include "control.h"
 #include "menu_api.h"
@@ -26,13 +24,13 @@ int step_player(int max_y, int max_x)
 		mrefresh(menu);
 		switch(c = getch()) {
 			case DOWN_K:
-				menu_driver(menu_menu(menu), REQ_DOWN_ITEM);
+				menu_driver(menu->menu, REQ_DOWN_ITEM);
 				break;
 			case UP_K:
-				menu_driver(menu_menu(menu), REQ_UP_ITEM);
+				menu_driver(menu->menu, REQ_UP_ITEM);
 				break;
 			case INTERACTION_K:
-				res = item_index(current_item(menu_menu(menu)));
+				res = item_index(current_item(menu->menu));
 				goto cleanup;
 				break;
 		}
@@ -74,25 +72,25 @@ int hit_bar(int max_y, int max_x)
 	len_ch(y, x - 1, len_x + 3, ' ', 1);
 	return (current_pos >= hit_x && current_pos <= hit_x + hit_len);
 }
-int attack(int res, gamer *player, struct enemy *enemy)
+int attack(int res, player_t *player, enemy_t *enemy)
 {
 	if(!res) return end;
 	healing(player->dmg * -1, &(enemy->hp), &(enemy->max_hp));
 	return hp_enemy;
 }
-int defense(int res, gamer *player, struct enemy *enemy)
+int defense(int res, player_t *player, enemy_t *enemy)
 {
 	if(res) return end;
 	healing(enemy->dmg * -1, &(player->hp), &(player->max_hp));
 	return hp_player;
 }
-int parry(int res, gamer *player, struct enemy *enemy)
+int parry(int res, player_t *player, enemy_t *enemy)
 {
 	if(res) return end;
 	healing(enemy->dmg * -1, &(player->hp), &(player->max_hp));
 	return end;
 }
-enum type_win step(int max_y, int max_x, gamer *player, struct enemy *enemy)
+enum type_win step(int max_y, int max_x, player_t *player, enemy_t *enemy)
 {
 	int act, res, i = 1;
 	while(i) {

@@ -2,9 +2,10 @@
 
 #include "fight.h"
 
-struct enemy *create_enemy(int hp, int dmg, int armor, char *name)
+static enemy_t *create_enemy(const int hp, const int dmg, const int armor,
+		char *name)
 {
-	struct enemy *enemy = malloc(sizeof(struct enemy));
+	enemy_t *enemy = malloc(sizeof(enemy_t));
 	enemy->max_hp = enemy->hp = hp;
 	enemy->dmg = dmg;
 	enemy->armor = armor;
@@ -12,9 +13,9 @@ struct enemy *create_enemy(int hp, int dmg, int armor, char *name)
 	return enemy;
 }
 
-struct enemy *who_enemy(char c)
+enemy_t *who_enemy(const char c)
 {
-	struct enemy *enemy = NULL;
+	enemy_t *enemy = NULL;
 	switch(c) {
 		case 'T': enemy = create_enemy(15, 2, 2, "Troll"); break;
 		case 'O': enemy = create_enemy(8, 1, 1, "Orc"); break;

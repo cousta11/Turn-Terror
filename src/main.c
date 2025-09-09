@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "main.h"
+#include "player_t.h"
 #include "dungeon.h"
 #include "screen.h"
 #include "fight.h"
@@ -13,7 +14,7 @@
 #define DZ_SPACE 5
 
 /* dead zone camera */
-static int dz_camera(gamer *player)
+static int dz_camera(player_t *player)
 {
 	int step = DZ_SPACE/2, res = 0;
 	if(player->scr_y > (player->dz_y + step)) res = 1;
@@ -27,7 +28,7 @@ static int dz_camera(gamer *player)
 	}
 	return 0;
 }
-static int interaction(gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
+static int interaction(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, c;
 	for(i = -1; i <= 1; i++) {
@@ -49,7 +50,7 @@ static int interaction(gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
 	}
 	return 0;
 }
-static int game(int max_y, int max_x, gamer *player, int game_place[MAP_SIZE][MAP_SIZE])
+static int game(int max_y, int max_x, player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	for(;;) {
 		if(start_fight(max_y, max_x, player, game_place))
@@ -57,12 +58,15 @@ static int game(int max_y, int max_x, gamer *player, int game_place[MAP_SIZE][MA
 				return 0;
 		if(dz_camera(player))
 			scr_replay(max_y, max_x, player, game_place);
-		switch(move_gamer(max_y, max_x, "test.save", player, game_place)) {
+		switch(control(player, game_place)) {
 			case 0: break;
 			case 1: return 0; break;
 			case 2:
 				if(interaction(player, game_place))
 					return 0;
+				break;
+			case 3:
+				new_game(max_y, max_x, player, game_place);
 				break;
 		}
 		refresh();
@@ -73,7 +77,7 @@ int main(int argc, char *argv[])
 {
 	int max_y, max_x, work_bw = 0, res, i;
 	int (*game_place)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*game_place));
-	gamer *player = malloc(sizeof(gamer));
+	player_t *player = malloc(sizeof(player_t));
 	if(game_place == NULL) {
 		perror("Error memory");
 		free(player);

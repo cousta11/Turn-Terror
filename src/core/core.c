@@ -6,7 +6,7 @@
 #include "core.h"
 #include "player.h"
 #include "dungeon.h"
-#include "screen.h"
+#include "ui.h"
 #include "combat.h"
 #include "combat_event.h"
 #include "control.h"
@@ -37,7 +37,7 @@ static int interaction(const int max_y, const int max_x, player_t *player,
 static int game(int max_y, int max_x, player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	for(;;) {
-		if(start_fight(max_y, max_x, player, game_place))
+		if(start_combat(max_y, max_x, player, game_place))
 			if(lose_screen(max_y, max_x, player, game_place))
 				return 0;
 		scr_replay(max_y, max_x, player, game_place);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 			work_bw = has_colors();
 	}
 
-	if(init_screen(&max_y, &max_x, work_bw)) {
+	if(init_ui(&max_y, &max_x, work_bw)) {
 		free(player);
 		free(game_place);
 		return 1;

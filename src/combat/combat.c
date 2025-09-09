@@ -37,7 +37,7 @@ static int fight(const int max_y, const int max_x, player_t *player,
 	return 0;
 }
 
-int start_fight(const int max_y, const int max_x, player_t *player,
+int start_combat(const int max_y, const int max_x, player_t *player,
 		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, k;

@@ -1,6 +1,6 @@
 #include "core.h"
 #include "dungeon.h"
-#include "screen.h"
+#include "ui.h"
 #include "random.h"
 
 #define START_MAX_HP 5

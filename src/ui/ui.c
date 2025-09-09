@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 
+#include "ui.h"
 #include "dungeon.h"
 #include "control.h"
 #include "menu_api.h"
@@ -22,7 +23,7 @@ static void start_colors(const int work_bw)
 
 	attrset(COLOR_PAIR(1));
 }
-int init_screen(int *max_y, int *max_x, const int work_bw)
+int init_ui(int *max_y, int *max_x, const int work_bw)
 {
 	initscr();
 	getmaxyx(stdscr, *max_y, *max_x);

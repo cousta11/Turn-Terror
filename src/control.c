@@ -3,7 +3,7 @@
 #include "player.h"
 #include "core.h"
 #include "control.h"
-#include "screen.h"
+#include "ui.h"
 
 int control(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {

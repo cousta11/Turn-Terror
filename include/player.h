@@ -1,5 +1,5 @@
-#ifndef PLAYER_T_H
-#define PLAYER_T_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 typedef struct player_t{
 	int y, x;

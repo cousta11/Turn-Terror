@@ -1,13 +1,13 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "player_t.h"
+#define MAP_SIZE 1000
 
 #define CHAR '@'
-#define MAP_SIZE 1000
 #define WALL '#'
 #define SPACE ' '
-#define FORESTER '^'
+#define OUT '^'
+
 #define ENEMIES {'T', 'G', 'O'}
 #define OBJECT {'H'}
 

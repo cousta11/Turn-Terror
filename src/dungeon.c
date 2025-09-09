@@ -49,7 +49,7 @@ static void drunkard(int y, int x, const int steps,
 		}
 	}
 
-	game_place[y][x] = FORESTER;
+	game_place[y][x] = OUT;
 }
 static void dungeon_generated(int *start_y, int *start_x,
 		int game_place[MAP_SIZE][MAP_SIZE])
@@ -67,7 +67,7 @@ static void dungeon_generated(int *start_y, int *start_x,
 
 	for(i = -2; i < 3; i++)
 		for(j = -2; j < 3; j++)
-			if(game_place[y + i][x + j] != FORESTER)
+			if(game_place[y + i][x + j] != OUT)
 				game_place[y + i][x + j] = SPACE;
 }
 static void new_player(player_t *player)

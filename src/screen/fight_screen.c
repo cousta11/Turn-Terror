@@ -18,21 +18,25 @@ void refresh_fight(const int max_y, const int max_x, win_t *window,
 win_t *display(const enum type_win type, win_t *window)
 {
 	win_t *tmp = window;
+
 	while(tmp) {
 		if(tmp->type == type)
 			break;
 		tmp = tmp->next;
 	}
+
 	return tmp;
 }
-void stat_display(const int win_y, const int len_y, const int len_x, const char *str,
+void state_display(const int win_y, const int len_y, const int len_x, const char *str,
 		const int color, const enum type_win type, win_t **window)
 {
 	win_t *tmp = display(type, *window);
+
 	if(tmp) 
 		mvwprintw(tmp->w, 0, 0, "%s", str);
 	else {
 		tmp = malloc(sizeof(win_t));
+		if(tmp == NULL) return;
 		tmp->type = type;
 		tmp->w = newwin(len_y, len_x, win_y, 0);
 		wattron(tmp->w, COLOR_PAIR(color));
@@ -43,19 +47,27 @@ void stat_display(const int win_y, const int len_y, const int len_x, const char 
 		update_panels();
 		doupdate();
 	}
+
 	wrefresh(tmp->w);
 }
-void free_display(win_t *window)
+void free_display(win_t *window_list)
 {
-	if(window)
-		free_display(window);
-	switch(window->type) {
-		case start: break;
-		case sp_player: del_panel(window->interface); break;
-		case hp_player: del_panel(window->interface); break;
-		case hp_enemy: del_panel(window->interface); break;
-		case end: break;
+	if (window_list == NULL)
+	    return;
+	
+	free_display(window_list->next);
+	
+	switch (window_list->type) {
+	    case start:
+	    case end:
+	        break;
+	    case sp_player:
+	    case hp_player: 
+	    case hp_enemy:
+	        del_panel(window_list->interface);
+	        break;
 	}
-	delwin(window->w);
-	free(window);
+	
+	delwin(window_list->w);
+	free(window_list);
 }

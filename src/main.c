@@ -11,7 +11,8 @@
 #include "fight_event.h"
 #include "control.h"
 
-static int interaction(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
+static int interaction(const int max_y, const int max_x, player_t *player,
+		int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int i, j, c;
 	for(i = -1; i <= 1; i++) {
@@ -20,8 +21,8 @@ static int interaction(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 				continue;
 			c = game_place[player->y + i][player->x + j];
 			switch(c) {
-				case FORESTER:
-					if(winner_screen(player, game_place))
+				case OUT:
+					if(winner_screen(max_y, max_x, player, game_place))
 						return 1;
 					break;
 				case 'H':
@@ -37,14 +38,14 @@ static int game(int max_y, int max_x, player_t *player, int game_place[MAP_SIZE]
 {
 	for(;;) {
 		if(start_fight(max_y, max_x, player, game_place))
-			if(lose_screen(player, game_place))
+			if(lose_screen(max_y, max_x, player, game_place))
 				return 0;
 		scr_replay(max_y, max_x, player, game_place);
 		switch(control(player, game_place)) {
 			case 0: break;
 			case 1: return 0; break;
 			case 2:
-				if(interaction(player, game_place))
+				if(interaction(max_y, max_x, player, game_place))
 					return 0;
 				break;
 			case 3:

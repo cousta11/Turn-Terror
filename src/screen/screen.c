@@ -1,6 +1,12 @@
 #include <ncurses.h>
+#include <string.h>
 
 #include "dungeon.h"
+#include "control.h"
+#include "menu_api.h"
+
+#define MIN_TERMINAL_HEIGHT 24
+#define MIN_TERMINAL_WIDTH 80
 
 static void start_colors(const int work_bw)
 {
@@ -23,7 +29,8 @@ int init_screen(int *max_y, int *max_x, const int work_bw)
 
 	if(*max_y < 24 || *max_x < 80) {
 		endwin();
-		fprintf(stderr, "Error: terminal must be >= 24x80\n");
+		fprintf(stderr, "Error: terminal must be >= %dx%d\n",
+				MIN_TERMINAL_HEIGHT, MIN_TERMINAL_WIDTH);
 		return 1;
 	}
 
@@ -35,30 +42,57 @@ int init_screen(int *max_y, int *max_x, const int work_bw)
 
 	return 0;
 }
-static int end_screen(player_t *player, int game_place[MAP_SIZE][MAP_SIZE],
-		const int col, char *str)
+static int select_act(menu_t *menu)
 {
-	int max_y, max_x;
-	char buf[] = "quit[q] restart[r/any]\n";
-	getmaxyx(stdscr, max_y, max_x);
+	int c;
+
+	for(;;) {
+		mrefresh(menu);
+
+		switch(c = getch()) {
+			case DOWN_K:
+				menu_driver(menu->menu, REQ_DOWN_ITEM);
+				break;
+			case UP_K:
+				menu_driver(menu->menu, REQ_UP_ITEM);
+				break;
+			case INTERACTION_K:
+				if(item_index(current_item(menu->menu)))
+					return 1;
+				return 0;
+				break;
+		}
+	}
+}
+static int end_screen(const int max_y, const int max_x, player_t *player,
+		int game_place[MAP_SIZE][MAP_SIZE], const int col, char *str)
+{
+	menu_t *menu = create_menu(max_y/2 - 4/2, max_x/2 - 14/2, 4, 14,
+			"continue", "exit game", NULL);
+
 	clear();
 	attrset(COLOR_PAIR(col));
-	mvaddstr(max_y/2, max_x/2 - sizeof(str)/2, str);
-	mvaddstr(max_y/2 + 1, max_x/2 - sizeof(buf)/2, buf);
-	if(getch() == 'q')
+	mvaddstr(max_y/2 - 4/2 - 1 , max_x/2 - strlen(str)/2, str);
+	refresh();
+
+	if(select_act(menu))
 		return 1;
+
 	new_game(max_y, max_x, player, game_place);
+	del_menu(&menu);
 	return 0;
 }
-int lose_screen(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
+int lose_screen(const int max_y, const int max_x, player_t *player,
+		int game_place[MAP_SIZE][MAP_SIZE])
 {
-	if(end_screen(player, game_place, 2, "You lose!\n"))
+	if(end_screen(max_y, max_x, player, game_place, 2, "You lose!\n"))
 		return 1;
 	return 0;
 }
-int winner_screen(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
+int winner_screen(const int max_y, const int max_x, player_t *player,
+		int game_place[MAP_SIZE][MAP_SIZE])
 {
-	if(end_screen(player, game_place, 4, "You winner!\n"))
+	if(end_screen(max_y, max_x, player, game_place, 4, "You winner!\n"))
 		return 1;
 	return 0;
 }
@@ -93,7 +127,7 @@ void map_replay(const int y, const int x, const int max_y, const int max_x,
 			switch(game_place[y + i][x + j]) {
 				case SPACE: ch = SPACE; cl_pair = 1; break;
 				case WALL: ch = WALL; cl_pair = 1; break;
-				case FORESTER: ch = FORESTER; cl_pair = 3; break;
+				case OUT: ch = OUT; cl_pair = 3; break;
 				case 'T': ch = 'T'; cl_pair = 2; break;
 				case 'O': ch = 'O'; cl_pair = 2; break;
 				case 'G': ch = 'G'; cl_pair = 2; break;
@@ -110,13 +144,16 @@ void scr_replay(const int max_y, const int max_x, player_t *player,
 {
 	int y = player->y - (max_y/2);
 	int x = player->x - (max_x/2);
+
 	if(y < 0) y = 0;
 	if(x < 0) x = 0;
 	if(y + max_y >= MAP_SIZE) y = MAP_SIZE - max_y;
 	if(x + max_x >= MAP_SIZE) x = MAP_SIZE - max_x;
+
 	clear();
 	map_replay(y, x, max_y, max_x, game_place);
 	attrset(COLOR_PAIR(1));
+
 	player->scr_y = player->y - y;
 	player->scr_x = player->x - x;
 	if(player->scr_y >= 0 && player->scr_y < max_y &&

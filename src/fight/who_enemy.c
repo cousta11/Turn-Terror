@@ -13,10 +13,10 @@ static enemy_t *create_enemy(const int hp, const int dmg, const int armor,
 	return enemy;
 }
 
-enemy_t *who_enemy(const char c)
+enemy_t *who_enemy(const char ch)
 {
 	enemy_t *enemy = NULL;
-	switch(c) {
+	switch(ch) {
 		case 'T': enemy = create_enemy(15, 2, 2, "Troll"); break;
 		case 'O': enemy = create_enemy(8, 1, 1, "Orc"); break;
 		case 'G': enemy = create_enemy(5, 1, 0, "Goblin"); break;

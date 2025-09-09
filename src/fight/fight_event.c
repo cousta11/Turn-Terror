@@ -4,51 +4,90 @@
 
 #include "fight_screen.h"
 
-int healing(int mod, int *hp, int *max_hp)
+int change_of_state(const int modifier, int *current, int *maximum)
 {
-	if(mod > 0) {
-		if(*hp == *max_hp)
-			return 0;
-		else if(*hp + mod > *max_hp)
-			*hp = *max_hp;
-		else
-			*hp += mod;
-	} else if(mod < 0) {
-		if(*hp + mod <= 0)
-			*hp = 0;
-		else
-		 *hp += mod;
-	}
-	return 1;
+    if(modifier == 0)
+        return 0;
+
+    if(modifier > 0) {
+        if(*current >= *maximum)
+        *current = (*current + modifier > *maximum) ? *maximum : *current + modifier;
+    } else {
+        *current = (*current + modifier <= 0) ? 0 : *current + modifier;
+    }
+    
+    return 1;
 }
-char *hp_str(char str[], int str_len, int hp, int max_hp, enum type_win w)
+static void create_bar_visual(char *buffer, int bar_width, int filled_width)
 {
-	char buf[32];
-	int i, buf_len = sizeof(buf);
-	int mhp = (str_len - 1) - ((max_hp - hp)*((str_len - 2)/max_hp));
-	str[str_len] = '\0';
-	str[0] = '[';
-	str[str_len - 1] = ']';
-	for(i = 1; i < str_len - 1; i++)
-		str[i] = '=';
-	for(i = mhp; i < str_len - 1 || i > str_len - 1; i++)
-		str[i] = ' ';
-	if(w == sp_player)
-		snprintf(buf, buf_len, "] SP: %d/%d [", hp, max_hp);
-	else
-		snprintf(buf, buf_len, "] HP: %d/%d [", hp, max_hp);
-	buf_len = strlen(buf);
-	for(i = 0; i < buf_len; i++)
-		str[str_len/2 - buf_len/2 + i] = buf[i];
-	return str;
+    int i;
+    
+    buffer[0] = '[';
+    
+    for (i = 1; i <= filled_width; i++) {
+        buffer[i] = '=';
+    }
+    
+    for (i = filled_width + 1; i < bar_width; i++) {
+        buffer[i] = ' ';
+    }
+    
+    buffer[bar_width] = ']';
+    buffer[bar_width + 1] = '\0';
 }
-void event_hp(int y, enum type_win w, int hp, int max_hp, int str_len, int col,
-		win_t **window)
+static void create_bar_info_text(char *text_buffer, int buffer_size,
+		int current, int maximum, enum type_win type)
 {
-	char *str = malloc(str_len);
-	hp_str(str, str_len, hp, max_hp, w);
-	hp_display(y, 1, strlen(str), str, col, w, window);
-	free(str);
+    if (type == sp_player) {
+        snprintf(text_buffer, buffer_size, "] SP: %d/%d [", 
+                current, maximum);
+    } else {
+        snprintf(text_buffer, buffer_size, "] HP: %d/%d [", 
+                current, maximum);
+    }
+}
+static void insert_text_into_bar(char *bar_buffer, int bar_width,
+                                const char *info_text)
+{
+    int text_length = strlen(info_text);
+    int center_pos = (bar_width - text_length) / 2;
+    int i;
+
+    for (i = 0; i < text_length && center_pos + i < bar_width; i++) {
+        bar_buffer[center_pos + i + 1] = info_text[i];
+    }
+}
+static char *create_status_bar_string(char *buffer, int buffer_size,
+		int current, int maximum, enum type_win type)
+{
+    char info_text[32];
+    int bar_width = buffer_size - 2;
+    int filled_width;
+
+    filled_width = (current * bar_width) / maximum;
+    filled_width = (filled_width > bar_width) ? bar_width : filled_width;
+    filled_width = (filled_width < 0) ? 0 : filled_width;
+
+    create_bar_visual(buffer, bar_width, filled_width);
+    create_bar_info_text(info_text, sizeof(info_text), current, maximum, type);
+    insert_text_into_bar(buffer, bar_width, info_text);
+
+    return buffer;
+}
+static void display_character_status(int y_position, enum type_win type, 
+		int current_val, int max_val, int width, int color, win_t **window)
+{
+    char *status_bar = malloc(width + 1);
+	if(status_bar == NULL)
+		return;
+
+    create_status_bar_string(status_bar, width + 1,
+			current_val, max_val, type);
+    
+    stat_display(y_position, 1, strlen(status_bar), 
+                status_bar, color, type, window);
+
+	free(status_bar);
 }
 void event(int max_y, int max_x, enum type_win w, win_t **window, player_t *player,
 		enemy_t *enemy)
@@ -56,13 +95,16 @@ void event(int max_y, int max_x, enum type_win w, win_t **window, player_t *play
 	switch(w) {
 		case start: break;
 		case sp_player:
-			event_hp(max_y - 2 , w, player->sp, player->max_sp, max_x, 5, window);
+			display_character_status(max_y - 2 , w, player->sp,
+					player->max_sp, max_x, 5, window);
 			break;
 		case hp_player:
-			event_hp(max_y - 1 , w, player->hp, player->max_hp, max_x, 4, window);
+			display_character_status(max_y - 1 , w, player->hp,
+					player->max_hp, max_x, 4, window);
 			break;
 		case hp_enemy:
-			event_hp(1, w, enemy->hp, enemy->max_hp, max_x, 2, window);
+			display_character_status(1 , w, enemy->hp,
+					enemy->max_hp, max_x, 2, window);
 			break;
 		case end: break;
 	}

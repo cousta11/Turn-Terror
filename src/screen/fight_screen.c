@@ -8,14 +8,14 @@
 #include "fight_event.h"
 #include "win_t.h"
 
-void refresh_fight(int max_y, int max_x, win_t *window, player_t *player,
-		enemy_t *enemy)
+void refresh_fight(const int max_y, const int max_x, win_t *window,
+		player_t *player, enemy_t *enemy)
 {
 	enum type_win event_type;
 	for(event_type = start; event_type < end; event_type++)
 		event(max_y, max_x, event_type, &window, player, enemy);
 }
-win_t *display(enum type_win type, win_t *window)
+win_t *display(const enum type_win type, win_t *window)
 {
 	win_t *tmp = window;
 	while(tmp) {
@@ -25,8 +25,8 @@ win_t *display(enum type_win type, win_t *window)
 	}
 	return tmp;
 }
-void hp_display(int win_y, int len_y, int len_x, char *str,
-		int color, enum type_win type, win_t **window)
+void stat_display(const int win_y, const int len_y, const int len_x, const char *str,
+		const int color, const enum type_win type, win_t **window)
 {
 	win_t *tmp = display(type, *window);
 	if(tmp) 

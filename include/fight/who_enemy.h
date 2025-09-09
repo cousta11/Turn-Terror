@@ -3,6 +3,6 @@
 
 typedef struct enemy_t enemy_t;
 
-enemy_t *who_enemy(const char c);
+enemy_t *who_enemy(const char ch);
 
 #endif

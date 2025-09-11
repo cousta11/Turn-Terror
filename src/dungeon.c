@@ -4,8 +4,8 @@
 #include "random.h"
 
 #define START_MAX_HP 5
-#define START_MAX_SP 5
-#define START_MOD_SP 5
+#define START_MAX_SP 10
+#define START_MOD_SP 0
 #define BASE_DMG 3
 #define BASE_ARMOR 2
 #define RANGE_DRUNKARD 50 * MAP_SIZE

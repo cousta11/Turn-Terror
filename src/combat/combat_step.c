@@ -91,24 +91,30 @@ static int parry(const int res, player_t *player, enemy_t *enemy)
 	change_of_state(enemy->dmg * -1, &(player->hp), &(player->max_hp));
 	return end;
 }
-enum type_win step(const int max_y, const int max_x, player_t *player,
-		enemy_t *enemy)
+static void is_can_act(const int max_y, const int max_x, int *act, player_t *player)
 {
-	int act, res, i = 1;
+	int i = 1;
 	while(i) {
-		act = step_player(max_y, max_x);
-		switch(act) {
+		*act = step_player(max_y, max_x);
+		switch(*act) {
 			case ATTACK:
 				if(!(player->sp - 5 + player->mod_sp >= 0)) break;
-				change_of_state(-5, &(player->sp), &(player->max_sp));
-				i = 0; player->mod_sp = 0;
+				change_of_state(player->mod_sp - 5, &(player->sp), &(player->max_sp));
+				i = player->mod_sp = 0;
 				break;
 			default:
-				if(act == DEFENSE) change_of_state(1, &(player->sp), &(player->max_sp));
-				if(act == PARRY) player->mod_sp = 1;
+				if(*act == DEFENSE) change_of_state(1, &(player->sp), &(player->max_sp));
+				if(*act == PARRY) player->mod_sp = 2;
 				i = 0;
 		}
 	}
+}
+
+enum type_win step(const int max_y, const int max_x, player_t *player,
+		enemy_t *enemy)
+{
+	int act, res;
+	is_can_act(max_y, max_x, &act, player);
 	res = hit_bar(max_y, max_x);
 	switch(act) {
 		case ATTACK: return attack(res, player, enemy); break;

@@ -7,6 +7,7 @@
 #include "menu_api.h"
 #include "random.h"
 
+#define TIME_NAPMS 30
 #define LEN_STORY_STEP 3
 #define ZERO -1
 #define ATTACK 0
@@ -66,7 +67,7 @@ static int hit_bar(const int max_y, const int max_x)
 			mvaddch(y, current_pos - 1, '=');
 		if(getch() != ERR)
 			break;
-		napms(100);
+		napms(TIME_NAPMS);
 		current_pos++;
 	}
 	nodelay(stdscr, FALSE);

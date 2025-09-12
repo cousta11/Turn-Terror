@@ -8,6 +8,8 @@
 #define DOWN_K 'j'
 #define REST_K 'r'
 #define INTERACTION_K 'i'
+#define SAVE_READ_K 'd'
+#define SAVE_WRITE_K 's'
 
 #include "core.h"
 #include "player.h"

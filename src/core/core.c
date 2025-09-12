@@ -1,9 +1,12 @@
 #include <ncurses.h>
+#include <fcntl.h>
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "core.h"
+#include "save.h"
 #include "player.h"
 #include "dungeon.h"
 #include "ui.h"
@@ -34,7 +37,8 @@ static int interaction(const int max_y, const int max_x, player_t *player,
 	}
 	return 0;
 }
-static int game(int max_y, int max_x, player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
+static int game(const int max_y, const int max_x, const int file,
+		player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	for(;;) {
 		if(start_combat(max_y, max_x, player, game_place))
@@ -51,18 +55,39 @@ static int game(int max_y, int max_x, player_t *player, int game_place[MAP_SIZE]
 			case 3:
 				new_game(max_y, max_x, player, game_place);
 				break;
+			case 4: record_a_save(file, player, game_place); break;
+			case 5: read_the_save(file, player, game_place); break;
 		}
 		refresh();
 	}
 }
+static int parsing_args(int argc, char *argv[], int *work_bw, int *file)
+{
+	int i;
+	*file = -1;
+	*work_bw = has_colors();
+	for(i = 1; i <= argc - 1; i++) {
+		if(strcmp(argv[i], "-bw") == 0)
+			*work_bw = 1;
+		if(strcmp(argv[i], "--save-file") == 0) {
+			if(i + 1 <= argc) {
+				*file = open(argv[i + 1], O_RDWR | O_CREAT, 0644);
+				if(*file == -1)
+					return -1;
+			}
+		}
+	}
+	return 0;
+}
 
 int main(int argc, char *argv[])
 {
-	int max_y, max_x, work_bw = 0, res, i;
+	int max_y, max_x, work_bw = 0, res;
 	int (*game_place)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*game_place));
 	player_t *player = malloc(sizeof(player_t));
+	int file;
 
-	if(game_place == NULL) {
+	if(game_place == NULL || player == NULL) {
 		perror("Error memory");
 		free(player);
 		return 1;
@@ -70,12 +95,8 @@ int main(int argc, char *argv[])
 
 	srand(time(NULL));
 
-	for(i = 1; i <= argc - 1; i++) {
-		if(strcmp(argv[i], "-bw") == 0)
-			work_bw = 1;
-		else
-			work_bw = has_colors();
-	}
+	if(parsing_args(argc, argv, &work_bw, &file) == -1)
+		return -1;
 
 	if(init_ui(&max_y, &max_x, work_bw)) {
 		free(player);
@@ -85,10 +106,11 @@ int main(int argc, char *argv[])
 
 	new_game(max_y, max_x, player, game_place);
 
-	res = game(max_y, max_x, player, game_place);	
+	res = game(max_y, max_x, file, player, game_place);	
 
 	endwin();
 	free(game_place);
 	free(player);
+	close(file);
 	return res;
 }

@@ -3,3 +3,4 @@ Turn-Terror
 .cache/
 compile_commands.json
 src/fight.c.old
+*.save

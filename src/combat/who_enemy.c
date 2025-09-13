@@ -1,6 +1,5 @@
 #include <stdlib.h>
 
-#include "combat.h"
 #include "enemy.h"
 
 static enemy_t *create_enemy(const int hp, const int dmg, const int armor,

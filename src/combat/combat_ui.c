@@ -3,7 +3,6 @@
 #include <menu.h>
 #include <stdlib.h>
 
-#include "combat.h"
 #include "combat_ui.h"
 #include "combat_event.h"
 #include "win_t.h"
@@ -52,22 +51,19 @@ void state_display(const int win_y, const int len_y, const int len_x, const char
 }
 void free_display(win_t *window_list)
 {
-	if (window_list == NULL)
-	    return;
-	
-	free_display(window_list->next);
-	
-	switch (window_list->type) {
-	    case start:
-	    case end:
-	        break;
-	    case sp_player:
-	    case hp_player: 
-	    case hp_enemy:
-	        del_panel(window_list->interface);
-	        break;
+	win_t *tmp;
+	while(window_list != NULL) {
+		tmp = window_list->next;
+		switch(window_list->type) {
+		    case start:
+		    case end:
+		        break;
+		    case sp_player:
+		    case hp_player: 
+		    case hp_enemy:
+		        del_panel(window_list->interface);
+		        break;
+		}
+		window_list = tmp;
 	}
-	
-	delwin(window_list->w);
-	free(window_list);
 }

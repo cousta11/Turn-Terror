@@ -64,8 +64,10 @@ void free_display(win_t *window_list)
 		    case hp_player: 
 		    case hp_enemy:
 		        del_panel(window_list->interface);
+				delwin(window_list->w);
 		        break;
 		}
+		free(window_list);
 		window_list = tmp;
 	}
 }

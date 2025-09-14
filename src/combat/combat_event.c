@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 #include "combat_ui.h"
 
@@ -86,17 +85,13 @@ static char *create_status_bar_string(char *buffer, int buffer_size,
 static void display_character_status(int y_position, enum type_win type, 
 		int current_val, int max_val, int width, int color, win_t **window)
 {
-	char *status_bar = malloc(width + 1);
-	if(status_bar == NULL)
-		return;
+	char status_bar[width + 1];
 
 	create_status_bar_string(status_bar, width + 1,
 			current_val, max_val, type);
 	
 	state_display(y_position, 1, strlen(status_bar), 
 	            status_bar, color, type, window);
-
-	free(status_bar);
 }
 void event(int max_y, int max_x, enum type_win w, win_t **window, player_t *player,
 		enemy_t *enemy)

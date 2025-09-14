@@ -7,12 +7,12 @@
 #include "combat_event.h"
 #include "win_t.h"
 
-void refresh_fight(const int max_y, const int max_x, win_t *window,
+void refresh_fight(const int max_y, const int max_x, win_t **window,
 		player_t *player, enemy_t *enemy)
 {
 	enum type_win event_type;
 	for(event_type = start; event_type < end; event_type++)
-		event(max_y, max_x, event_type, &window, player, enemy);
+		event(max_y, max_x, event_type, window, player, enemy);
 }
 win_t *display(const enum type_win type, win_t *window)
 {
@@ -31,9 +31,11 @@ void state_display(const int win_y, const int len_y, const int len_x, const char
 {
 	win_t *tmp = display(type, *window);
 
-	if(tmp) 
+	if(tmp) {
+		werase(tmp->w);
+		wattron(tmp->w, COLOR_PAIR(color));
 		mvwprintw(tmp->w, 0, 0, "%s", str);
-	else {
+	} else {
 		tmp = malloc(sizeof(win_t));
 		if(tmp == NULL) return;
 		tmp->type = type;

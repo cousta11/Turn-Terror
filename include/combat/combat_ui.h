@@ -11,7 +11,7 @@ void state_display(const int win_y, const int len_y, const int len_x, const char
 		const int color, const enum type_win type, win_t **window);
 win_t *display(const enum type_win type, win_t *window);
 void free_display(win_t *window);
-void refresh_fight(const int max_y, const int max_x, win_t *window,
+void refresh_fight(const int max_y, const int max_x, win_t **window,
 		player_t *player, enemy_t *enemy);
 
 #endif

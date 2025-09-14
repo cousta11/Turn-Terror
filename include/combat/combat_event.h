@@ -1,7 +1,6 @@
 #ifndef FIGHT_EVENT_H
 #define FIGHT_EVENT_H
 
-#include "combat.h"
 #include "combat_ui.h"
 
 int change_of_state(const int modifier, int *current, int *maximum);

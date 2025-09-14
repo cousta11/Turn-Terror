@@ -21,7 +21,7 @@ static int fight(const int max_y, const int max_x, player_t *player,
 	clear();
 	wattron(stdscr, COLOR_PAIR(2));
 	mvaddstr(0, max_x/2 - strlen(enemy->name)/2, enemy->name);
-	refresh_fight(max_y, max_x, window, player, enemy);
+	refresh_fight(max_y, max_x, &window, player, enemy);
 
 	while(player->hp > 0 && enemy->hp > 0) {
 		event_type = step(max_y, max_x, player, enemy);

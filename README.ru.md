@@ -1,4 +1,7 @@
-Turn Terror
+#Turn Terror
+![Turn Terror](https://img.shields.io/badge/Version-1.0-blue.svg)
+![Roguelike](https://img.shields.io/badge/Genre-Roguelike-orange.svg)
+![C](https://img.shields.io/badge/Language-C-green.svg)
 
 <details>
 <summary><strong>Read in other languages</strong></summary>
@@ -9,9 +12,7 @@ Turn Terror
 
 </details>
 
-![Turn Terror](https://img.shields.io/badge/Version-1.0-blue.svg)
-![Roguelike](https://img.shields.io/badge/Genre-Roguelike-orange.svg)
-![C](https://img.shields.io/badge/Language-C-green.svg)
+
 
 **Turn Terror** — классический roguelike с процедурной генерацией подземелий, тактической боевой системой и постоянной смертью. Играйте за авантюриста, застрявшего в опасных пещерах, и попытайтесь найти выход, сражаясь с разнообразными монстрами.
 

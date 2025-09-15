@@ -91,7 +91,7 @@ static void locate_enemy(const int game_place[MAP_SIZE][MAP_SIZE],
 
 void move_enemies(const player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
-	int new_positions[MAP_SIZE][MAP_SIZE] = {0};
+	int (*new_positions)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*new_positions));
 	int y, x;
 	
 	locate_enemy(game_place, new_positions);
@@ -110,4 +110,6 @@ void move_enemies(const player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 	            game_place[y][x] = new_positions[y][x];
 	        else if(is_enemy_char(game_place[y][x]))
 	            game_place[y][x] = SPACE;
+
+	free(new_positions);
 }

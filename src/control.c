@@ -10,8 +10,6 @@ int control(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int mod_y = 0, mod_x = 0;
 
-	if(quit) end_game();
-
 	switch(getch()) {
 		case QUIT_K: return 1; break;
 		case INTERACTION_K: return 2; break;
@@ -23,6 +21,8 @@ int control(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 		case UP_K: mod_y = -1; break;
 		case RIGHT_K: mod_x = 1; break;
 	}
+
+	if(quit) end_game();
 
 	move_player(mod_y, mod_x, player, game_place);
 

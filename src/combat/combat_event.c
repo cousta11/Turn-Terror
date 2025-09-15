@@ -61,6 +61,7 @@ static void insert_text_into_bar(char *bar_buffer, int bar_width,
 	int center_pos = (bar_width - text_length) / 2;
 	int i;
 
+	center_pos = (center_pos < 0) ? 0 : center_pos;
 	for(i = 0; i < text_length && center_pos + i < bar_width; i++) {
 	    bar_buffer[center_pos + i + 1] = info_text[i];
 	}

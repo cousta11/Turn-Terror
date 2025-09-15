@@ -17,12 +17,11 @@
 #define PARRY 2
 #define AMOUNT_ACT 3
 #define SP_ATTACK 5
-#define LEN_STR_ACT 29
 
 struct act {
-	char attack[LEN_STR_ACT];
-	char defense[LEN_STR_ACT];
-	char parry[LEN_STR_ACT];
+	char *attack;
+	char *defense;
+	char *parry;
 };
 
 static void str_act(char *str, const char *source, const int value, const int max_len)
@@ -30,24 +29,32 @@ static void str_act(char *str, const char *source, const int value, const int ma
 	int len, len_str, i;
 	char val_str[8];
 
+	str[0] = '\0';
+
 	snprintf(val_str, sizeof(val_str), "SP: %d", value);
 
 	strcpy(str, source);
+	str[max_len] = '\0';
 
 	len = strlen(val_str);
 	len_str = strlen(str);
 
 	for(i = 0; i + len_str < max_len; i++)
 		str[len_str + i] = ' ';
+	str[max_len - len] = '\0';
 
-	for(i = 0; i <= len; i++)
-		str[max_len - i] = val_str[len - i];
+	strcat(str, val_str);
+	str[max_len] = '\0';
 }
 static menu_t *step_menu(const int max_y, const int max_x, struct act *str,
 		const int val_attack, const int val_defense, const int val_parry)
 {
 	menu_t *menu = NULL;
-	int len = sizeof(char)*max_x/3 - 4 + 1;
+	int len = sizeof(char)*max_x/3 - 5;
+
+	str->attack = malloc(len);
+	str->defense = malloc(len);
+	str->parry = malloc(len);
 
 	str_act(str->attack, "Attack", val_attack, len - 1);
 	str_act(str->defense, "Defense", val_defense, len - 1);
@@ -55,6 +62,7 @@ static menu_t *step_menu(const int max_y, const int max_x, struct act *str,
 
 	menu = create_menu((max_y/2 - AMOUNT_ACT/2), max_x/2 - max_x/3/2,
 			5, max_x/3, str->attack, str->defense, str->parry, NULL);
+
 
 	return menu;
 }
@@ -92,6 +100,9 @@ static int step_player(const int max_y, const int max_x, const player_t *player)
 
 	res = step_control(menu);
 
+	free(str.attack);
+	free(str.defense);
+	free(str.parry);
 	del_menu(&menu);
 	return res;
 }

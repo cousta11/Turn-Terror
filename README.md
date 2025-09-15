@@ -1,5 +1,4 @@
 # Turn Terror
-***
 ![Turn Terror](https://img.shields.io/badge/Version-1.0-blue.svg)
 ![Roguelike](https://img.shields.io/badge/Genre-Roguelike-orange.svg)
 ![C](https://img.shields.io/badge/Language-C-green.svg)

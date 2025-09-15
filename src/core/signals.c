@@ -11,12 +11,6 @@ void handler(int s)
 }
 void setup_signal_handlers()
 {
-	/*struct sigaction sa;
-	sa.sa_handler = handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-
-	sigaction(SIGINT, &sa, NULL);*/
 	signal(SIGINT, handler);
 }
 void cleanup_signal_handlers()

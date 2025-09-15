@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "core.h"
+#include "enemy_ai.h"
 #include "combat_ui.h"
 #include "combat_step.h"
 #include "combat.h"
@@ -57,6 +58,6 @@ int start_combat(const int max_y, const int max_x, player_t *player,
 			}
 		}
 	}
-
+	move_enemies(player, game_place);
 	return 0;
 }

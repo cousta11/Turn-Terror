@@ -9,7 +9,7 @@
 #define BASE_DMG 3
 #define BASE_ARMOR 2
 #define RANGE_DRUNKARD 50 * MAP_SIZE
-#define CHANCE_SPAWN_ENEMY 20    /* 2% chance spawn enemy (from 1000) */
+#define CHANCE_SPAWN_ENEMY 10    /* 1.0% chance spawn enemy (from 1000) */
 #define CHANCE_SPAWN_OBJECT 3    /* 0.3% chance spawn object (from 1000) */
 
 static void direction(int *y, int *x)

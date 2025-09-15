@@ -5,26 +5,26 @@
 
 int change_of_state(const int modifier, int *current, int *maximum)
 {
-    if(modifier == 0)
-        return 0;
+	if(modifier == 0)
+	    return 0;
 
-    if(modifier > 0) {
-        if(*current >= *maximum)
-            return 0;
-        
-        if(*current + modifier > *maximum)
-            *current = *maximum;
-        else
-            *current += modifier;
+	if(modifier > 0) {
+	    if(*current >= *maximum)
+	        return 0;
+	    
+	    if(*current + modifier > *maximum)
+	        *current = *maximum;
+	    else
+	        *current += modifier;
 
-    } else {
-        if(*current + modifier <= 0)
-            *current = 0;
-        else 
-            *current += modifier;
-    }
-    
-    return 1;
+	} else {
+	    if(*current + modifier <= 0)
+	        *current = 0;
+	    else 
+	        *current += modifier;
+	}
+	
+	return 1;
 }
 static void create_bar_visual(char *buffer, int bar_width, int filled_width)
 {
@@ -32,11 +32,11 @@ static void create_bar_visual(char *buffer, int bar_width, int filled_width)
 	
 	buffer[0] = '[';
 	
-	for (i = 1; i <= filled_width; i++) {
+	for(i = 1; i <= filled_width; i++) {
 	    buffer[i] = '=';
 	}
 	
-	for (i = filled_width + 1; i < bar_width; i++) {
+	for(i = filled_width + 1; i < bar_width; i++) {
 	    buffer[i] = ' ';
 	}
 	
@@ -46,7 +46,7 @@ static void create_bar_visual(char *buffer, int bar_width, int filled_width)
 static void create_bar_info_text(char *text_buffer, int buffer_size,
 		int current, int maximum, enum type_win type)
 {
-	if (type == sp_player) {
+	if(type == sp_player) {
 	    snprintf(text_buffer, buffer_size, "] SP: %d/%d [", 
 	            current, maximum);
 	} else {
@@ -61,7 +61,7 @@ static void insert_text_into_bar(char *bar_buffer, int bar_width,
 	int center_pos = (bar_width - text_length) / 2;
 	int i;
 
-	for (i = 0; i < text_length && center_pos + i < bar_width; i++) {
+	for(i = 0; i < text_length && center_pos + i < bar_width; i++) {
 	    bar_buffer[center_pos + i + 1] = info_text[i];
 	}
 }

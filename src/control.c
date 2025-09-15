@@ -1,6 +1,7 @@
 #include <ncurses.h>
 
 #include "player.h"
+#include "signals.h"
 #include "core.h"
 #include "control.h"
 #include "ui.h"
@@ -8,6 +9,8 @@
 int control(player_t *player, int game_place[MAP_SIZE][MAP_SIZE])
 {
 	int mod_y = 0, mod_x = 0;
+
+	if(quit) end_game();
 
 	switch(getch()) {
 		case QUIT_K: return 1; break;

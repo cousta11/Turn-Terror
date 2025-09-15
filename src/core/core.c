@@ -6,13 +6,15 @@
 #include <unistd.h>
 
 #include "core.h"
-#include "save.h"
 #include "player.h"
+#include "signals.h"
 #include "dungeon.h"
+#include "save.h"
 #include "ui.h"
 #include "combat.h"
 #include "combat_event.h"
 #include "control.h"
+
 
 static int interaction(const int max_y, const int max_x, player_t *player,
 		int game_place[MAP_SIZE][MAP_SIZE])
@@ -80,12 +82,14 @@ static int parsing_args(int argc, char *argv[], int *work_bw, int *file)
 	return 0;
 }
 
+
 int main(int argc, char *argv[])
 {
 	int max_y, max_x, work_bw = 0, res;
 	int (*game_place)[MAP_SIZE] = malloc(MAP_SIZE * sizeof(*game_place));
 	player_t *player = malloc(sizeof(player_t));
 	int file;
+	quit = 0;
 
 	if(game_place == NULL || player == NULL) {
 		perror("Error memory");
@@ -104,13 +108,16 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	setup_signal_handlers();
+
 	new_game(max_y, max_x, player, game_place);
 
 	res = game(max_y, max_x, file, player, game_place);	
 
-	endwin();
+	cleanup_signal_handlers();
 	free(game_place);
 	free(player);
 	close(file);
+	end_game();
 	return res;
 }

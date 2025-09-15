@@ -1,8 +1,10 @@
 #include <ncurses.h>
 #include <menu.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "combat_event.h"
+#include "signals.h"
 #include "control.h"
 #include "menu_api.h"
 #include "random.h"
@@ -61,6 +63,8 @@ static int step_control(menu_t *menu)
 	int c;
 
 	for(;;) {
+		if(quit) end_game();
+
 		mrefresh(menu);
 
 		switch(c = getch()) {
@@ -116,6 +120,7 @@ static int hit_bar(const int max_y, const int max_x)
 		refresh();
 		if(current_pos > x)
 			mvaddch(y, current_pos - 1, '=');
+		if(quit) end_game();
 		if(getch() != ERR)
 			break;
 		napms(TIME_NAPMS);

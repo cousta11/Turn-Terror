@@ -31,11 +31,9 @@ void state_display(const int win_y, const int len_y, const int len_x, const char
 {
 	win_t *tmp = display(type, *window);
 
-	if(tmp) {
-		werase(tmp->w);
-		wattron(tmp->w, COLOR_PAIR(color));
+	if(tmp)
 		mvwprintw(tmp->w, 0, 0, "%s", str);
-	} else {
+	else {
 		tmp = malloc(sizeof(win_t));
 		if(tmp == NULL) return;
 		tmp->type = type;

@@ -4,6 +4,14 @@ Turn Terror
 ![Roguelike](https://img.shields.io/badge/Genre-Roguelike-orange.svg)
 ![C](https://img.shields.io/badge/Language-C-green.svg)
 
+<details>
+<summary><strong>Read in other languages</strong></summary>
+<br>
+
+*   [Русский](README.ru.md)
+
+</details>
+
 **Turn Terror** is a classic roguelike featuring procedurally generated dungeons, a tactical combat system, and permadeath. Play as an adventurer trapped in dangerous caves and try to find the exit while fighting a variety of monsters.
 
 ## Game Features

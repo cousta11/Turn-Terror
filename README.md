@@ -4,80 +4,80 @@ Turn Terror
 ![Roguelike](https://img.shields.io/badge/Genre-Roguelike-orange.svg)
 ![C](https://img.shields.io/badge/Language-C-green.svg)
 
-**Turn Terror** — классический roguelike с процедурной генерацией подземелий, тактической боевой системой и постоянной смертью. Играйте за авантюриста, застрявшего в опасных пещерах, и попытайтесь найти выход, сражаясь с разнообразными монстрами.
+**Turn Terror** is a classic roguelike featuring procedurally generated dungeons, a tactical combat system, and permadeath. Play as an adventurer trapped in dangerous caves and try to find the exit while fighting a variety of monsters.
 
-## Особенности игры
+## Game Features
 
-- **Процедурная генерация**: Каждое прохождение уникально благодаря случайно генерируемым пещерам
-- **Тактический бой**: Система боя с выбором действий и реактивной мини-игрой
-- **Перманентная смерть**: Потеря прогресса при смерти добавляет остроты игре
-- **Система сохранений**: Возможность сохранять и загружать прогресс через файлы
+- **Procedural Generation**: Each playthrough is unique thanks to randomly generated caves.
+- **Tactical Combat**: A combat system with action selection and a reactive mini-game.
+- **Permanent Death**: Losing progress upon death adds thrill to the game.
+- **Save System**: Ability to save and load progress via files.
 
-## Установка и запуск
+## Installation and Launch
 
 ```bash
-# Клонирование репозитория
+# Clone the repository
 git clone https://github.com/your-username/turn-terror.git
 
-# Сборка проекта
+# Build the project
 cd turn-terror
 make
 
-# Запуск игры
+# Launch the game
 ./Turn-Terror
 
-# Запуск с возможностью сохранения
+# Launch with save capability
 ./Turn-Terror --save-file filename
 ```
 
-## Управление
+## Controls
 
-### Основное управление
-- **h** — движение влево
-- **j** — движение вниз
-- **k** — движение вверх
-- **l** — движение вправо
-- **s** — сохранить игру (только при запуске с параметром --save-file)
-- **d** — загрузить игру
-- **q** — выход из игры
+### Basic Controls
+- **h** — move left
+- **j** — move down
+- **k** — move up
+- **l** — move right
+- **s** — save the game (only when launched with --save-file parameter)
+- **d** — load the game
+- **q** — quit the game
 
-### Боевая система
-При приближении к врагу на расстояние 2 клеток запускается бой:
-1. Выбор действия (клавиши k/j для навигации по меню):
-   - **Атака** — наносит урон (стоимость 5 SP)
-   - **Защита** — восстанавливает 1 SP
-   - **Парирование** — снижает стоимость следующей атаки до 3 SP
-2. Нажмите **i** для запуска мини-игры
-3. В мини-игре нажмите любую клавишу в момент нахождения указателя в зеленой зоне
+### Combat System
+When approaching an enemy within 2 tiles, combat initiates:
+1. Select an action (use k/j keys to navigate the menu):
+   - **Attack** — deals damage (costs 5 SP)
+   - **Defend** — restores 1 SP
+   - **Parry** — reduces the cost of the next attack to 3 SP
+2. Press **i** to start the mini-game
+3. In the mini-game, press any key when the pointer is in the green zone
 
-## Игровой мир
+## Game World
 
-- **Стены** — `#` (непроходимые препятствия)
-- **Игрок** — `@` (управляемый персонаж)
-- **Выход** — `^` (цель игры)
-- **Монстры**:
-  - **G** — Гоблин (слабый противник)
-  - **O** — Орк (средний противник)
-  - **T** — Тролль (сильный противник)
+- **Walls** — `#` (impassable obstacles)
+- **Player** — `@` (playable character)
+- **Exit** — `^` (game objective)
+- **Monsters**:
+  - **G** — Goblin (weak enemy)
+  - **O** — Orc (medium enemy)
+  - **T** — Troll (strong enemy)
 
-## Настройка управления
+## Configuring Controls
 
-Для изменения управления отредактируйте файл `src/include/control.h` и пересоберите проект:
+To change controls, edit the `src/include/control.h` file and rebuild the project:
 
 ```bash
 make clean
 make
 ```
 
-## Разработка
+## Development
 
-Игра разработана на C с использованием кросс-платформенных библиотек. Структура проекта:
+The game is developed in C using cross-platform libraries. Project structure:
 
 ```
 src/
-├── include/    # Заголовочные файлы
-├── src/        # Исходный код
-├── Makefile    # Файл сборки
+├── include/    # Header files
+├── src/        # Source code
+├── Makefile    # Build file
 ```
 
-**Примечание**: Буду рад получить критику и отзывы по поводу кода и игрового процесса.
+**Note**: I welcome any feedback and criticism regarding the code and gameplay.
